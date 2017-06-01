@@ -3,9 +3,9 @@ object_type: domain
 version: 1.0
 object:
   attributes:
-    name: LDAP
-    description: LDAP automate utilities developed by Red Hat Consulting.
-    display_name: 
+    name: RedHatConsulting_LDAP
+    description: ManageIQ Automate Domain for reading and writing information from and to LDAP.
+    display_name: LDAP
     priority: 4
     enabled: true
     tenant_id: 10000000000001
