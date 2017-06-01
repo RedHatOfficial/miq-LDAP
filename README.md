@@ -9,6 +9,7 @@
 ## Contributors
 | Name           | E-mail            |
 | -------------- | ----------------- |
+| Ian Tewksbury  | itewk@redhat.com |
 | Kevin Morey    | kmorey@redhat.com |
 | Jose Simonelli | jose@redhat.com   |
 
