@@ -2,20 +2,15 @@
 
 ## General Information
 
-| Name      | miq-LDAP                  |
-| License   | GPL v2 (see LICENSE file) |
-| Version   | 1.0                       |
+| Name      | License                   |
+| --------- | ------------------------- |
+| miq-LDAP  | GPL v2 (see LICENSE file) |
 
-## Author
-| Name        | E-mail            |
-| ----------- | ----------------- |
-| Kevin Morey | kmorey@redhat.com |
-
-## Packager
-| Name              | E-mail |
-| --- | --- |
-| Jose Simonelli    | jose@redhat.com |
-
+## Contributors
+| Name           | E-mail            |
+| -------------- | ----------------- |
+| Kevin Morey    | kmorey@redhat.com |
+| Jose Simonelli | jose@redhat.com   |
 
 ## Install
 1) Download import/export rake scripts
