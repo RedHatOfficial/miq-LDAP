@@ -1,0 +1,15 @@
+---
+object_type: instance
+version: 1.0
+object:
+  attributes:
+    display_name: 
+    name: get_ldap_entries_attributes
+    inherits: 
+    description: 
+  fields:
+  - get_ldap_entries:
+      value: "/Integration/LDAP/StateMachines/Methods/get_ldap_entries"
+      collect: "/ldap_entries = ldap_entries"
+  - execute:
+      value: get_ldap_entries_attributes

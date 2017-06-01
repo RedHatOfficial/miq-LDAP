@@ -1,0 +1,12 @@
+---
+object_type: method
+version: 1.0
+object:
+  attributes:
+    name: update_multiple_vms_tags_and_custom_attributes_from_ldap_entries
+    display_name: 
+    description: 
+    scope: instance
+    language: ruby
+    location: inline
+  inputs: []

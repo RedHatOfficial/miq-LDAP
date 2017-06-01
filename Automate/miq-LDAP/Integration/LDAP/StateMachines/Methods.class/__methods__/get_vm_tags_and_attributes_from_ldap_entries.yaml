@@ -1,0 +1,12 @@
+---
+object_type: method
+version: 1.0
+object:
+  attributes:
+    name: get_vm_tags_and_attributes_from_ldap_entries
+    display_name: 
+    description: 
+    scope: instance
+    language: ruby
+    location: inline
+  inputs: []

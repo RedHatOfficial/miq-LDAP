@@ -1,0 +1,27 @@
+---
+object_type: instance
+version: 1.0
+object:
+  attributes:
+    display_name: Default
+    name: Default
+    inherits: 
+    description: 
+  fields:
+  - GetLDAPEntries:
+      value: "/Integration/LDAP/StateMachines/Methods/get_ldap_entries"
+      collect: "/ldap_entries = ldap_entries; /ldap_sync_status = ldap_sync_status;
+        /ldap_sync_successful = ldap_sync_successful"
+      on_error: on_error(message => "Error Finding LDAP Entry")
+  - GetVMTagsAndAttributesFromLDAPEntries:
+      value: "/Integration/LDAP/StateMachines/Methods/get_vm_tags_and_attributes_from_ldap_entries"
+      collect: "/ldap_sync_status = ldap_sync_status; /ldap_sync_successful = ldap_sync_successful;
+        /vm_tags = vm_tags; /vm_custom_attributes = vm_custom_attributes"
+      on_error: on_error(message => "Error Getting Tags and Attributes from LDAP Entry")
+  - SetLDAPSyncStatus:
+      value: "/Integration/LDAP/StateMachines/Methods/set_ldap_sync_status"
+      collect: "/vm_tags = vm_tags; /vm_custom_attributes = vm_custom_attributes"
+  - SetCustomAttributes:
+      value: "/Infrastructure/VM/Operations/Methods/set_custom_attributes"
+  - SetTags:
+      value: "/Infrastructure/VM/Operations/Methods/set_tags"

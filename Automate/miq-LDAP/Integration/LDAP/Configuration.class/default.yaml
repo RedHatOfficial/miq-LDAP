@@ -1,0 +1,14 @@
+---
+object_type: instance
+version: 1.0
+object:
+  attributes:
+    display_name: 
+    name: default
+    inherits: 
+    description: 
+  fields:
+  - ldap_password:
+      value: v2:{I4JYEn5IfuQ7ppXKOMF/hg==}
+  - vms_batch_size:
+      value: '10'

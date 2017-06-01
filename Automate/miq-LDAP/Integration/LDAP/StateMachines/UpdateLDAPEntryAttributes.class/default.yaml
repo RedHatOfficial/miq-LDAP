@@ -1,0 +1,29 @@
+---
+object_type: instance
+version: 1.0
+object:
+  attributes:
+    display_name: Default
+    name: Default
+    inherits: 
+    description: 
+  fields:
+  - GetLDAPExistingEntries:
+      value: "/Integration/LDAP/StateMachines/Methods/get_ldap_entries"
+      collect: "/ldap_entries = ldap_entries;"
+      on_exit: skip_to_state(next_state => "MungeLDAPEntryAttributes")
+      on_error: skip_to_state(next_state => "GetLDAPNewEntryAttributes")
+  - GetLDAPNewEntryAttributes:
+      value: "/Integration/LDAP/Operations/Methods/get_ldap_new_entry_attributes"
+      collect: "/ldap_new_entry_attributes = ldap_new_entry_attributes; /ldap_new_entry_dn
+        = ldap_new_entry_dn;"
+  - AddLDAPEntry:
+      value: "/Integration/LDAP/StateMachines/Methods/add_ldap_entry"
+      collect: "/ldap_entries = ldap_entries;"
+  - MungeLDAPEntryAttributes:
+      value: "/Integration/LDAP/Operations/Methods/munge_ldap_entry_attributes"
+      collect: "/ldap_entry_attributes = ldap_entry_attributes;"
+  - SetLDAPEntryAttributes:
+      value: "/Integration/LDAP/StateMachines/Methods/update_ldap_entry_attributes"
+  - UpdateVMTagsAndCustomAttributes:
+      value: "/Integration/LDAP/StateMachines/UpdateVMTagsAndCustomAttributesFromLDAPEntries/Default"
