@@ -2,14 +2,13 @@
 
 ## General Information
 
-| Name      | miq-LDAP |
-| --- | --- | --- |
+| Name      | miq-LDAP                  |
 | License   | GPL v2 (see LICENSE file) |
-| Version   | 1.0 |
+| Version   | 1.0                       |
 
 ## Author
-| Name      | E-mail |
-| --- | --- |
+| Name        | E-mail            |
+| ----------- | ----------------- |
 | Kevin Morey | kmorey@redhat.com |
 
 ## Packager
