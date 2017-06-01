@@ -24,7 +24,7 @@ The high level features of this ManageIQ extension.
 * Delete LDAP entry for a VM
 * Update LDAP entry attributes for a VM from a dialog
 * Update VM tags and custom attributes based on LDAP entry attributes
-* Dyanamic dialog methods for populating fields with existing LDAP entry attribute values
+* Dynamic dialog methods for populating fields with existing LDAP entry attribute values
 
 # Dependencies
 Dependencies of this ManageIQ extensions.
