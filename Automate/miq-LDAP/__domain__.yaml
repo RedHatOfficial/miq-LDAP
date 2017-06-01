@@ -3,7 +3,7 @@ object_type: domain
 version: 1.0
 object:
   attributes:
-    name: RedHatConsulting_LDAP
+    name: LDAP
     description: LDAP automate utilities developed by Red Hat Consulting.
     display_name: 
     priority: 4
