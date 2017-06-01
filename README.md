@@ -6,6 +6,8 @@ ManageIQ Automate Domain for reading and writing information from and to LDAP.
 * [miq-LDAP](#miq-ldap)
 * [Table of Contents](#table-of-contents)
 * [Features](#features)
+* [Dependencies](#dependencies)
+  * [Other Datastores](#other-datastores)
 * [Automate](#automate)
   * [Override](#override)
   * [Requests](#requests)
@@ -23,6 +25,14 @@ The high level features of this ManageIQ extension.
 * Update LDAP entry attributes for a VM from a dialog
 * Update VM tags and custom attributes based on LDAP entry attributes
 * Dyanamic dialog methods for populating fields with existing LDAP entry attribute values
+
+# Dependencies
+Dependencies of this ManageIQ extensions.
+
+## Other Datastores
+These ManageIQ atuomate domains must also be installed for this datastore to function.
+
+* [RedHatConsulting_Utilities](https://github.com/rhtconsulting/miq-Utilities)
 
 # Automate
 Information on the provided Automate.
@@ -109,6 +119,7 @@ Requires that the dialog also has a hidden field that calls the [get_ldap_entrie
 
 # Install
 
+0. Install dependencies
 1. Automate -> Import/Export
 2. Import Datastore via git
 3. Git URL: `https://github.com/rhtconsulting/miq-LDAP.git`
