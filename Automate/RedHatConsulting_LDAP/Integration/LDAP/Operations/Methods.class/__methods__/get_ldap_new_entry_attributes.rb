@@ -16,12 +16,14 @@
 #
 # Given a VM hostname returns the base attributes required to add a new LDAP entry for that host.
 #
-# @param vm_hostname Hostname of the VM to get the new LDAP entry attributes for
-# @param vm          VM to get the new LDAP entry attributes for
-# @param ldap_config LDAP configuration information
+# @param vm_hostname       Hostname of the VM to get the new LDAP entry attributes for
+# @param vm                VM to get the new LDAP entry attributes for
+# @param dialog_attributes Dialog attributes which can be used to set the base attributes,
+#                          required create the new LDAP entry
+# @param ldap_config       LDAP configuration information
 #
 # @return Hash of LDAP attributes to use to create a new LDAP entry for the given VM hostname
-def get_ldap_new_entry_attributes(vm_hostname, vm, ldap_config)
+def get_ldap_new_entry_attributes(vm_hostname, vm, dialog_attributes, ldap_config)
   
   # IMPLIMENTORS: Change as necisary.
   #               This reference works with Red Hat IdM / FreeIPA.
@@ -41,11 +43,13 @@ end
 #
 # Returns the DN for a new LDAP entry for the given VM hostname.
 #
-# @param vm_hostname Hostname of VM to create the DN for the new LDAP entry
-# @param ldap_config LDAP configuration information
+# @param vm_hostname       Hostname of VM to create the DN for the new LDAP entry
+# @param vm                VM to create the DN for the new LDAP entry
+# @param dialog_attributes Dialog attributes which can be used to create the DN for the new LDAP entry
+# @param ldap_config       LDAP configuration information
 #
 # @return Full DN for a new LDAP entry for the given VM hostname
-def get_ldap_new_entry_dn(vm_hostname, ldap_config)
+def get_ldap_new_entry_dn(vm_hostname, vm, dialog_attributes, ldap_config)
   
   # IMPLIMENTORS: Change as necisary.
   #               This reference works with Red Hat IdM / FreeIPA.
@@ -131,15 +135,22 @@ begin
   # IMPLIMENTORS: DO NOT MODIFY
   #
   # get the parameters
+
+  # get the VM to get the new LDAP entry attributes for and
+  # get the service dialog attributes associated with that VM
   if $evm.root['miq_provision']
-    $evm.log(:info, "Get VM from $evm.root['miq_provision']") if @DEBUG
-    vm = $evm.root['miq_provision'].vm
+    $evm.log(:info, "Get VM and dialog attributes from $evm.root['miq_provision']") if @DEBUG
+    miq_provision     = $evm.root['miq_provision']
+    vm                = miq_provision.vm
+    dialog_attributes = miq_provision.options
   else
-    $evm.log(:info, "Get VM from paramater") if @DEBUG
-    vm = get_param(:vm)
+    $evm.log(:info, "Get VM from paramater and dialog attributes form $evm.root") if @DEBUG
+    vm                = get_param(:vm)
+    dialog_attributes = $evm.root.attributes
   end
-  error("vm parameter not found") if vm.nil?
-  $evm.log(:info, "vm=#{vm.name}") if @DEBUG
+  error("vm parameter not found")      if vm.blank?
+  $evm.log(:info, "vm => #{vm.name}")                          if @DEBUG
+  $evm.log(:info, "dialog_attributes => #{dialog_attributes}") if @DEBUG
   
   # IMPLIMENTORS: DO NOT MODIFY
   #
@@ -156,8 +167,8 @@ begin
   # IMPLIMENTORS: DO NOT MODIFY
   #
   # get information about the new LDAP entry
-  ldap_new_entry_attributes = get_ldap_new_entry_attributes(vm_hostname, vm, ldap_config)
-  ldap_new_entry_dn         = get_ldap_new_entry_dn(vm_hostname, ldap_config)
+  ldap_new_entry_attributes = get_ldap_new_entry_attributes(vm_hostname, vm, dialog_attributes, ldap_config)
+  ldap_new_entry_dn         = get_ldap_new_entry_dn(vm_hostname, vm, dialog_attributes, ldap_config)
   
   # IMPLIMENTORS: DO NOT MODIFY
   #

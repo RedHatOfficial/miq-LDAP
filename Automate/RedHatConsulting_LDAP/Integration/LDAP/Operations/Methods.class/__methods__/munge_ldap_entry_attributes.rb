@@ -73,10 +73,12 @@ begin
   # get the VM to get the LDAP entry attributes for and
   # get the service dialog attributes associated with that VM
   if $evm.root['miq_provision']
+    $evm.log(:info, "Get VM and dialog attributes from $evm.root['miq_provision']") if @DEBUG
     miq_provision     = $evm.root['miq_provision']
     vm                = miq_provision.vm
     dialog_attributes = miq_provision.options
   else
+    $evm.log(:info, "Get VM from paramater and dialog attributes form $evm.root") if @DEBUG
     vm                = get_param(:vm)
     dialog_attributes = $evm.root.attributes
   end
