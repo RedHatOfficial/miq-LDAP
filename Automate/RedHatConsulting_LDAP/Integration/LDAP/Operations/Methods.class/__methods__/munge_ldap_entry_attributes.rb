@@ -2,7 +2,7 @@
 # This can be done with a combination of attributes from the existing LDAP entry,
 # information about the VM from CloudForms, user input, or any other source of information the implmentor chooses.
 #
-# IMPLIMENTORS: Intended to be overriden by implimentors.
+# IMPLEMENTERS: Intended to be overriden by implementers.
 #
 # EXPECTED
 #   EVM STATE || EVM CURRENT || EVM OBJECT || EVM ROOT || $evm.root['miq_provision']
@@ -20,7 +20,7 @@
 require 'rubygems'
 require 'net/ldap'
 
-# IMPLIMENTORS: DO NOT MODIFY
+# IMPLEMENTERS: DO NOT MODIFY
 #
 # Log an error and exit.
 #
@@ -32,7 +32,7 @@ def error(msg)
   exit MIQ_STOP
 end
 
-# IMPLIMENTORS: DO NOT MODIFY
+# IMPLEMENTERS: DO NOT MODIFY
 #
 # There are many ways to attempt to pass parameters in Automate.
 # This function checks all of them in priorty order as well as checking for symbol or string.
@@ -96,8 +96,8 @@ begin
   ldap_entry = ldap_entries[0]
   $evm.log(:info, "ldap_entry => #{ldap_entry}") if @DEBUG
   
-  # IMPLIMENTORS: Modify as neciessary
-  #               This implimentation returns the existing LDAP entry attributes without modification
+  # IMPLEMENTERS: Modify as necessary
+  #               This implementation returns the existing LDAP entry attributes without modification
   #
   ldap_entry_attributes = {}
   ldap_entry.each do |ldap_attribute, ldap_attribute_values|
@@ -105,8 +105,8 @@ begin
     $evm.log(:info, "Set LDAP entry attribute to existing value: { ldap_attribute => #{ldap_attribute}, ldap_attribute_values => #{ldap_attribute_values} }") if @DEBUG
   end
   
-  # IMPLIMENTORS: Modify as neciessary
-  #               This implimentation overrides any existing LDAP entry attributes with values from dialog elements with names that
+  # IMPLEMENTERS: Modify as necessary
+  #               This implementation overrides any existing LDAP entry attributes with values from dialog elements with names that
   #               start with 'dialog_ldap_entry_attribute_'.
   #               All values are split on "\n" in case it is ment to be an array of values.
   #
@@ -117,7 +117,7 @@ begin
     $evm.log(:info, "Set LDAP entry attribute to value from dialog: { ldap_attribute => #{dialog_ldap_entry_attribute_name}, ldap_attribute_values => #{ldap_entry_attributes[dialog_ldap_entry_attribute_name]} }") if @DEBUG
   end
   
-  # IMPLIMENTORS: DO NOT MODIFY
+  # IMPLEMENTERS: DO NOT MODIFY
   #
   # return munged LDAP entry attributes
   $evm.object['ldap_entry_attributes'] = ldap_entry_attributes
