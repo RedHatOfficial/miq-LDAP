@@ -17,10 +17,11 @@
 # Given a VM hostname returns the base attributes required to add a new LDAP entry for that host.
 #
 # @param vm_hostname Hostname of the VM to get the new LDAP entry attributes for
+# @param vm          VM to get the new LDAP entry attributes for
 # @param ldap_config LDAP configuration information
 #
 # @return Hash of LDAP attributes to use to create a new LDAP entry for the given VM hostname
-def get_ldap_new_entry_attributes(vm_hostname, ldap_config)
+def get_ldap_new_entry_attributes(vm_hostname, vm, ldap_config)
   
   # IMPLIMENTORS: Change as necisary.
   #               This reference works with Red Hat IdM / FreeIPA.
@@ -155,7 +156,7 @@ begin
   # IMPLIMENTORS: DO NOT MODIFY
   #
   # get information about the new LDAP entry
-  ldap_new_entry_attributes = get_ldap_new_entry_attributes(vm_hostname, ldap_config)
+  ldap_new_entry_attributes = get_ldap_new_entry_attributes(vm_hostname, vm, ldap_config)
   ldap_new_entry_dn         = get_ldap_new_entry_dn(vm_hostname, ldap_config)
   
   # IMPLIMENTORS: DO NOT MODIFY
