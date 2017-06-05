@@ -1,4 +1,4 @@
-# Gets the LDAP attributes to set for a new LDAP entry.
+# Gets the minimum LDAP attributes to set for creation of a new LDAP entry.
 #
 # NOTE: Intended to be overriden by implimentors.
 #
