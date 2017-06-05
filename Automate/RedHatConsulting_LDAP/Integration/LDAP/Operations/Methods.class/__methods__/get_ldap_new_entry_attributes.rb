@@ -1,6 +1,6 @@
 # Gets the minimum LDAP attributes to set for creation of a new LDAP entry.
 #
-# NOTE: Intended to be overriden by implimentors.
+# NOTE: Intended to be overriden by implementers.
 #
 # EXPECTED
 #   EVM STATE || EVM CURRENT || EVM OBJECT || EVM ROOT || $evm.root['miq_provision']
@@ -12,20 +12,20 @@
 #     'ldap_new_entry_dn'         - The DN of the new LDAP entry to create for the given VM.
 @DEBUG = false
 
-# IMPLIMENTORS: Update with business logic
+# IMPLEMENTERS: Update with business logic
 #
 # Given a VM hostname returns the base attributes required to add a new LDAP entry for that host.
 #
 # @param vm_hostname       Hostname of the VM to get the new LDAP entry attributes for
 # @param vm                VM to get the new LDAP entry attributes for
 # @param dialog_attributes Dialog attributes which can be used to set the base attributes,
-#                          required create the new LDAP entry
+#                          required to create the new LDAP entry
 # @param ldap_config       LDAP configuration information
 #
 # @return Hash of LDAP attributes to use to create a new LDAP entry for the given VM hostname
 def get_ldap_new_entry_attributes(vm_hostname, vm, dialog_attributes, ldap_config)
   
-  # IMPLIMENTORS: Change as necisary.
+  # IMPLEMENTERS: Change as necessary.
   #               This reference works with Red Hat IdM / FreeIPA.
   #
   krb_principal_domain_name = ldap_config['krb_principal_domain_name']
@@ -39,7 +39,7 @@ def get_ldap_new_entry_attributes(vm_hostname, vm, dialog_attributes, ldap_confi
   }
 end
 
-# IMPLIMENTORS: Update with business logic
+# IMPLEMENTERS: Update with business logic
 #
 # Returns the DN for a new LDAP entry for the given VM hostname.
 #
@@ -51,7 +51,7 @@ end
 # @return Full DN for a new LDAP entry for the given VM hostname
 def get_ldap_new_entry_dn(vm_hostname, vm, dialog_attributes, ldap_config)
   
-  # IMPLIMENTORS: Change as necisary.
+  # IMPLEMENTERS: Change as necessary.
   #               This reference works with Red Hat IdM / FreeIPA.
   #
   ldap_treebase = ldap_config['ldap_treebase']
@@ -64,7 +64,7 @@ def get_ldap_new_entry_dn(vm_hostname, vm, dialog_attributes, ldap_config)
   return ldap_new_entry_dn
 end
 
-# IMPLIMENTORS: DO NOT MODIFY
+# IMPLEMENTERS: DO NOT MODIFY
 #
 # Log an error and exit.
 #
@@ -76,7 +76,7 @@ def error(msg)
   exit MIQ_STOP
 end
 
-# IMPLIMENTORS: DO NOT MODIFY
+# IMPLEMENTERS: DO NOT MODIFY
 #
 # There are many ways to attempt to pass parameters in Automate.
 # This function checks all of them in priorty order as well as checking for symbol or string.
@@ -109,7 +109,7 @@ def get_param(param)
   return param_value
 end
 
-# IMPLIMENTORS: DO NOT MODIFY
+# IMPLEMENTERS: DO NOT MODIFY
 #
 # Gets the LDAP connection configuration information.
 LDAP_CONFIG_URI = 'Integration/LDAP/Configuration/default'
@@ -117,7 +117,7 @@ def get_ldap_config()
   return $evm.instantiate(LDAP_CONFIG_URI)
 end
 
-# IMPLIMENTORS: DO NOT MODIFY
+# IMPLEMENTERS: DO NOT MODIFY
 #
 # Get the hostname for a given VM.
 #
@@ -130,9 +130,9 @@ def get_vm_hostname(vm)
   return hostname
 end
 
-# IMPLIMENTORS: DO NOT MODIFY
+# IMPLEMENTERS: DO NOT MODIFY
 begin
-  # IMPLIMENTORS: DO NOT MODIFY
+  # IMPLEMENTERS: DO NOT MODIFY
   #
   # get the parameters
 
@@ -152,31 +152,31 @@ begin
   $evm.log(:info, "vm => #{vm.name}")                          if @DEBUG
   $evm.log(:info, "dialog_attributes => #{dialog_attributes}") if @DEBUG
   
-  # IMPLIMENTORS: DO NOT MODIFY
+  # IMPLEMENTERS: DO NOT MODIFY
   #
   # determine LDAP treebase and hostname filter
   ldap_config = get_ldap_config()
   error("LDAP Configuration not found") if ldap_config.nil?
   
-  # IMPLIMENTORS: DO NOT MODIFY
+  # IMPLEMENTERS: DO NOT MODIFY
   #
   # determine the VM hostname
   vm_hostname = get_vm_hostname(vm)
   $evm.log(:info, "vm_hostname='#{vm_hostname}'") if @DEBUG
   
-  # IMPLIMENTORS: DO NOT MODIFY
+  # IMPLEMENTERS: DO NOT MODIFY
   #
   # get information about the new LDAP entry
   ldap_new_entry_attributes = get_ldap_new_entry_attributes(vm_hostname, vm, dialog_attributes, ldap_config)
   ldap_new_entry_dn         = get_ldap_new_entry_dn(vm_hostname, vm, dialog_attributes, ldap_config)
   
-  # IMPLIMENTORS: DO NOT MODIFY
+  # IMPLEMENTERS: DO NOT MODIFY
   #
   # return new LDAP entry attributes
   $evm.object['ldap_new_entry_attributes'] = ldap_new_entry_attributes
   $evm.log(:info, "$evm.object['ldap_new_entry_attributes']=#{$evm.object['ldap_new_entry_attributes']})") if @DEBUG
   
-  # IMPLIMENTORS: DO NOT MODIFY
+  # IMPLEMENTERS: DO NOT MODIFY
   #
   # return new LDAP entry DN
   $evm.object['ldap_new_entry_dn'] = ldap_new_entry_dn
