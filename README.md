@@ -2,7 +2,6 @@
 ManageIQ Automate Domain for reading and writing information from and to LDAP.
 
 # Table of Contents
-
 * [miq-LDAP](#miq-ldap)
 * [Table of Contents](#table-of-contents)
 * [Features](#features)
@@ -17,7 +16,6 @@ ManageIQ Automate Domain for reading and writing information from and to LDAP.
 * [Contributors](#contributors)
 
 # Features
-
 The high level features of this ManageIQ extension.
 
 * Create LDAP entry for a VM
@@ -118,7 +116,6 @@ An example instance to show how to create a dynamic dialog field that is populat
 Requires that the dialog also has a hidden field that calls the [get_ldap_entries_attributes](#instance-get_ldap_entries_attributes) instance.
 
 # Install
-
 0. Install dependencies
 1. Automate -> Import/Export
 2. Import Datastore via git
@@ -130,6 +127,6 @@ Requires that the dialog also has a hidden field that calls the [get_ldap_entrie
 # Contributors
 | Name           | E-mail            |
 | -------------- | ----------------- |
-| Ian Tewksbury  | itewk@redhat.com |
+| Ian Tewksbury  | itewk@redhat.com  |
 | Kevin Morey    | kmorey@redhat.com |
 | Jose Simonelli | jose@redhat.com   |
