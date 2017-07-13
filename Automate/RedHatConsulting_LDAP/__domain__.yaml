@@ -4,10 +4,9 @@ version: 1.0
 object:
   attributes:
     name: RedHatConsulting_LDAP
-    description: ManageIQ Automate Domain for reading and writing information from and to LDAP.
+    description: ManageIQ Automate Domain for reading and writing information from
+      and to LDAP.
     display_name: LDAP
-    priority: 4
     enabled: true
-    tenant_id: 10000000000001
     source: user
     top_level_namespace: 
