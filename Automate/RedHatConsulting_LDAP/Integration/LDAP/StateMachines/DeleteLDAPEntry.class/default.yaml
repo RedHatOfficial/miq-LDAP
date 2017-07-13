@@ -10,5 +10,7 @@ object:
   fields:
   - GetLDAPExistingEntries:
       value: "/Integration/LDAP/StateMachines/Methods/get_ldap_entries"
+      on_error: no_ldap_entries_found
   - DeleteLDAPEntries:
       value: "/Integration/LDAP/StateMachines/Methods/delete_ldap_entries"
+      on_entry: verify_ldap_entries_found

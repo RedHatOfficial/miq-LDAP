@@ -23,7 +23,7 @@ begin
   end
   $evm.log(:info, "{ $evm.root['ae_status_state'] => #{$evm.root['ae_status_state']}, $evm.root['ae_result'] => #{$evm.root['ae_result']}, new_result => #{new_result} }") if @DEBUG
   
-  # Skip processing LDAP entry and go directly to setting the Tags and Attributes
+  # Set attributes to skip to specified next state
   $evm.log(:info, "Skip to State: #{next_state}")
   $evm.root['ae_result']     = new_result
   $evm.root['ae_next_state'] = next_state
