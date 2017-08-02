@@ -7,6 +7,7 @@
 # EXPECTED
 #   EVM STATE || EVM CURRENT || EVM OBJECT || EVM ROOT
 #     :ldap_entries - LDAP entries to get the attributes of and return as YAML
+#
 @DEBUG = false
 
 require 'rubygems'
