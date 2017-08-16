@@ -143,7 +143,7 @@ begin
         $evm.object['ldap_entries'] = ldap_entries
       else
         # this should never happen...
-        error("LDAP could not find the newly created entry for: { :dn => #{dn} }")
+        error("LDAP could not find the newly created entry for: { :dn => #{ldap_new_entry_dn} }")
       end
     else
       error("Unable to add LDAP entry for #{dn}. This is typically either a permisisons issue or a missing required attribute issue. See LDAP server error logs for details.")
