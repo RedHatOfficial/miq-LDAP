@@ -121,19 +121,24 @@ begin
     # else if update existing attribute
     # else error
     if ldap_attribute_values.blank? && !ldap_entry[ldap_attribute].blank?
-      ldap_attribute_operation = [:delete, ldap_attribute, nil]
+      ldap_attribute_operations.push([:delete, ldap_attribute, nil])
     elsif !ldap_attribute_values.blank? && ldap_entry[ldap_attribute].blank?
-      ldap_attribute_operation = [:add, ldap_attribute, ldap_attribute_values]
+      # All values get added individually instead of multiple entries to the same :add operation.
+      if ldap_attribute_values.kind_of?(Array) && ldap_attribute_values.size > 1
+        ldap_attribute_values.each do |value|
+          ldap_attribute_operations.push([:add, ldap_attribute, value])
+        end
+      else
+        ldap_attribute_operations.push([:add, ldap_attribute, ldap_attribute_values])
+      end
     elsif ldap_attribute_values == ldap_entry[ldap_attribute]
       # do nothing since existing and new value are already equal
       $evm.log(:info, "No op for LDAP entry attribute (#{ldap_attribute}) since existing value already equals new value.") if @DEBUG
     elsif !ldap_attribute_values.blank? && !ldap_entry[ldap_attribute].blank?
-      ldap_attribute_operation = [:replace, ldap_attribute, ldap_attribute_values]
+      ldap_attribute_operations.push([:replace, ldap_attribute, ldap_attribute_values])
     else
       error("Could not calculate LDAP operation for LDAP entry attribute (#{ldap_attribute}). This should never happen.")
     end
-    
-    ldap_attribute_operations.push(ldap_attribute_operation) if !ldap_attribute_operation.blank?
   end
   $evm.log(:info, "ldap_attribute_operations => #{ldap_attribute_operations}") if @DEBUG
 
