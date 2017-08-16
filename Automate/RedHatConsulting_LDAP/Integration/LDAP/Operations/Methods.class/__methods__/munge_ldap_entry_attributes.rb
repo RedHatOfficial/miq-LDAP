@@ -70,22 +70,36 @@ begin
   $evm.root.attributes.each { |k, v| $evm.log(:info, "  #{k} => #{v}") } if @DEBUG
   $evm.log(:info, "END: EVM Root Dump") if @DEBUG
   
-  # get the VM to get the LDAP entry attributes for and
-  # get the service dialog attributes associated with that VM
-  if $evm.root['miq_provision']
-    $evm.log(:info, "Get VM and dialog attributes from $evm.root['miq_provision']") if @DEBUG
-    miq_provision     = $evm.root['miq_provision']
-    vm                = miq_provision.vm
-    dialog_attributes = miq_provision.options
-  else
-    $evm.log(:info, "Get VM from paramater and dialog attributes form $evm.root") if @DEBUG
-    vm                = get_param(:vm)
-    dialog_attributes = $evm.root.attributes
+  # Depending on the vmdb_object_type get the required information from different sources
+  #   * get the VM to get the LDAP entry attributes for and
+  #   * get the service dialog attributes associated with that VM
+  $evm.log(:info, "$evm.root['vmdb_object_type'] => '#{$evm.root['vmdb_object_type']}'.")
+  case $evm.root['vmdb_object_type']
+    when 'miq_provision'
+      $evm.log(:info, "Get VM and dialog attributes from $evm.root['miq_provision']") if @DEBUG
+      miq_provision     = $evm.root['miq_provision']
+      vm                = miq_provision.vm
+      dialog_attributes = miq_provision.options
+    
+      # IMPLIMENTORS: Modify as neciessary
+      #               Get additional parameters
+    when 'vm'
+      $evm.log(:info, "Get VM from paramater and dialog attributes form $evm.root") if @DEBUG
+      vm                = get_param(:vm)
+      dialog_attributes = $evm.root.attributes
+    
+      # IMPLIMENTORS: Modify as neciessary
+      #               Get additional parameters
+    else
+      error("Can not handle vmdb_object_type: #{$evm.root['vmdb_object_type']}")
   end
   error("vm parameter not found")      if vm.blank?
   error("dialog attributes not found") if dialog_attributes.blank?
   $evm.log(:info, "vm => #{vm.name}")                          if @DEBUG
   $evm.log(:info, "dialog_attributes => #{dialog_attributes}") if @DEBUG
+  
+  # IMPLIMENTORS: Modify as neciessary
+  #               Additional parameters verification
   
   # get the existing LDAP entries for the given VM
   ldap_entries = get_param(:ldap_entries)
