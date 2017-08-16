@@ -151,10 +151,10 @@ begin
       if modify_success
         $evm.log(:info, "Modified LDAP entry attributes: { :dn => #{ldap_entry.dn}, ldap_attribute_operations => #{ldap_attribute_operations} }")
       else
-        error("Failed to perform LDAP entry attribute operations. This is typically a permisisons issue. See LDAP server error logs for details.")
+        error("Failed to perform LDAP entry attribute operations. LDAP Error = #{ldap.get_operation_result.to_s}")
       end
     else
-      error("LDAP could not bind to #{ldap_server} as #{ldap_username}")
+      error("LDAP could not bind to #{ldap_server} as #{ldap_username}.  LDAP Error = #{ldap.get_operation_result.to_s}")
     end
   else
     $evm.log(:info, "No LDAP entry attribute operations to perform on DN: #{ldap_entry.dn}")
