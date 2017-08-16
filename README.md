@@ -123,10 +123,3 @@ Requires that the dialog also has a hidden field that calls the [get_ldap_entrie
 4. Submit
 5. Select Branc/Tag to syncronize with
 6. Submit
-
-# Contributors
-| Name           | E-mail            |
-| -------------- | ----------------- |
-| Ian Tewksbury  | itewk@redhat.com  |
-| Kevin Morey    | kmorey@redhat.com |
-| Jose Simonelli | jose@redhat.com   |
