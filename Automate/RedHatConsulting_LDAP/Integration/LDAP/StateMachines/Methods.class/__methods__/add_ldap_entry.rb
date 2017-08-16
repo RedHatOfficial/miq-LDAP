@@ -146,7 +146,7 @@ begin
         error("LDAP could not find the newly created entry for: { :dn => #{ldap_new_entry_dn} }")
       end
     else
-      error("Unable to add LDAP entry for #{dn}. This is typically either a permisisons issue or a missing required attribute issue. See LDAP server error logs for details.")
+      error("Unable to add LDAP entry for #{ldap_new_entry_dn}. This is typically either a permisisons issue or a missing required attribute issue. See LDAP server error logs for details.")
     end
   else
     error("LDAP could not bind to #{ldap_server} as #{ldap_username}")
