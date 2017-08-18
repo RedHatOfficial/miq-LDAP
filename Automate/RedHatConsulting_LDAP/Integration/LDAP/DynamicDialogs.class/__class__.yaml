@@ -13,7 +13,7 @@ object:
   schema:
   - field:
       aetype: attribute
-      name: ldap_entry_attribute_name
+      name: ldap_treebase
       display_name: 
       datatype: string
       priority: 1
@@ -32,11 +32,131 @@ object:
       max_retries: 
       max_time: 
   - field:
+      aetype: attribute
+      name: ldap_filter_attribute
+      display_name: 
+      datatype: string
+      priority: 2
+      owner: 
+      default_value: 
+      substitute: true
+      message: create
+      visibility: 
+      collect: 
+      scope: 
+      description: 
+      condition: 
+      on_entry: 
+      on_exit: 
+      on_error: 
+      max_retries: 
+      max_time: 
+  - field:
+      aetype: attribute
+      name: ldap_filter_value
+      display_name: 
+      datatype: string
+      priority: 3
+      owner: 
+      default_value: 
+      substitute: true
+      message: create
+      visibility: 
+      collect: 
+      scope: 
+      description: 
+      condition: 
+      on_entry: 
+      on_exit: 
+      on_error: 
+      max_retries: 
+      max_time: 
+  - field:
+      aetype: attribute
+      name: ldap_search_scope
+      display_name: 
+      datatype: integer
+      priority: 4
+      owner: 
+      default_value: 
+      substitute: true
+      message: create
+      visibility: 
+      collect: 
+      scope: 
+      description: 
+      condition: 
+      on_entry: 
+      on_exit: 
+      on_error: 
+      max_retries: 
+      max_time: 
+  - field:
+      aetype: attribute
+      name: dialog_value_ldap_entry_attribute_name
+      display_name: 
+      datatype: string
+      priority: 5
+      owner: 
+      default_value: 
+      substitute: true
+      message: create
+      visibility: 
+      collect: 
+      scope: 
+      description: 
+      condition: 
+      on_entry: 
+      on_exit: 
+      on_error: 
+      max_retries: 
+      max_time: 
+  - field:
+      aetype: attribute
+      name: dialog_description_ldap_entry_attribute_name
+      display_name: 
+      datatype: string
+      priority: 6
+      owner: 
+      default_value: 
+      substitute: true
+      message: create
+      visibility: 
+      collect: 
+      scope: 
+      description: 
+      condition: 
+      on_entry: 
+      on_exit: 
+      on_error: 
+      max_retries: 
+      max_time: 
+  - field:
+      aetype: method
+      name: validate_attributes
+      display_name: 
+      datatype: string
+      priority: 7
+      owner: 
+      default_value: 
+      substitute: true
+      message: create
+      visibility: 
+      collect: 
+      scope: 
+      description: 
+      condition: 
+      on_entry: 
+      on_exit: 
+      on_error: skip_to_state(next_state => "execute")
+      max_retries: 
+      max_time: 
+  - field:
       aetype: state
       name: get_ldap_entries
       display_name: 
       datatype: string
-      priority: 2
+      priority: 8
       owner: 
       default_value: 
       substitute: true
@@ -56,7 +176,7 @@ object:
       name: execute
       display_name: 
       datatype: string
-      priority: 3
+      priority: 9
       owner: 
       default_value: 
       substitute: true

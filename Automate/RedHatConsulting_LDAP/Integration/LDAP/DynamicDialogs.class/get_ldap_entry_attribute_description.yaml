@@ -8,7 +8,7 @@ object:
     inherits: 
     description: 
   fields:
-  - ldap_entry_attribute_name:
+  - dialog_value_ldap_entry_attribute_name:
       value: description
   - execute:
       value: get_ldap_entry_attribute

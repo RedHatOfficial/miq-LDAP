@@ -23,6 +23,7 @@ The high level features of this ManageIQ extension.
 * Update LDAP entry attributes for a VM from a dialog
 * Update VM tags and custom attributes based on LDAP entry attributes
 * Dynamic dialog methods for populating fields with existing LDAP entry attribute values
+* Dynamic dialog methods for populating drop down fields with LDAP entries using specified attributes as the value and description
 
 # Dependencies
 Dependencies of this ManageIQ extensions.
@@ -106,6 +107,12 @@ See [Instance: get_ldap_entries_attributes](#instance-get_ldap_entries_attribute
 Gets the value for the given LDAP entry attribute.
 
 This method depends on the [get_ldap_entries_attributes](#method-get_ldap_entries_attributes) method to be setting the `dialog_ldap_entries_attributes` field with a YAML value of all of the existing LDAP entry attributes to avoid having to query LDAP for the entries for mutliple dialog fields all relying on information from that entry.
+
+### Method: get_ldap_entries
+Returns a dynamic drop down dialog with all of the given LDAP entries using the value of the given attribute names for the drop down values and descriptions.
+
+### Method: validate_ldap_attributes
+Helper method if implimenters want to add in their own attribute verification before retreiving LDAP entries.
 
 ### Instance: get_ldap_entries_attributes
 A hidden dialog field text area should be configured with the name `ldap_entries_attributes` that calls the this instance  so that the [get_ldap_entry_attribute](#method-get_ldap_entry_attribute) method can reference the output rather then having to make multiple LDAP calls.

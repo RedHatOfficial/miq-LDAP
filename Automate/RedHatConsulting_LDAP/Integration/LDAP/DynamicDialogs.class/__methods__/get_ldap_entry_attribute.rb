@@ -7,7 +7,7 @@
 #
 # EXPECTED
 #   EVM STATE || EVM CURRENT || EVM OBJECT || EVM ROOT
-#     ldap_entry_attribute_name - LDAP entry attribute name to get the value for
+#     dialog_value_ldap_entry_attribute_name - LDAP entry attribute name to get the value for
 #
 #   EVM ROOT
 #     dialog_ldap_entries_attributes - Dialog element that has all of the existing LDAP entry attributes in YAML format.
@@ -61,7 +61,7 @@ begin
   $evm.log(:info, "$evm.object => #{$evm.object}")                        if @DEBUG
   $evm.object.attributes.each { |k,v| $evm.log(:info, "  #{k} => #{v}") } if @DEBUG
   
-  ldap_entry_attribute_name = get_param(:ldap_entry_attribute_name)
+  ldap_entry_attribute_name = get_param(:dialog_value_ldap_entry_attribute_name)
   error("ldap_entry_attribute_name parameter not set") if ldap_entry_attribute_name.blank?
   
   ldap_entries_attributes = $evm.root['dialog_ldap_entries_attributes']
