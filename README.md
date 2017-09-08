@@ -89,9 +89,32 @@ Updates the tags and custom attributes on a collection of VMs using the LDAP ent
 For this to work `/LDAP/Integration/LDAP/Operations/Methods/get_vm_tags_and_attributes_from_ldap_entry` must be overwritten with the specifc business logic on which LDAP entry attributes should be syncronized to which VM tags and/or custom attributes.
 
 ### UpdateVMTagsAndCustomAttributesFromLDAPEntries
-Updates the tlags and custom attributes on a VM using the LDAP entry attributes for that VM.
+Updates the tags and custom attributes on a VM using the LDAP entry attributes for that VM.
 
 For this to work `/LDAP/Integration/LDAP/Operations/Methods/get_vm_tags_and_attributes_from_ldap_entry` must be overwritten with the specifc business logic on which LDAP entry attributes should be syncronized to which VM tags and/or custom attributes.
+
+### GetLDAPEntries
+Gets the LDAP entries in a given tree that have a given value for a given LDAP attribute.
+
+#### Required Attributes
+* `ldap_treebase` - LDAP tree to search for matching LDAP entries
+* `ldap_filter_attribute` - LDAP attribute attribute to search in LDAP entries for a match
+* `ldap_filter_value` - LDAP attribute value to search for
+
+#### Collects
+* `/ldap_entries` - Matching LDAP entries
+
+### ValidateLDAPEMailAddresses
+Validates that the given email addresses exist as attribute values on LDAP entries in the given tree.
+
+#### Required Attributes
+* `email_addresses` - E-Mail addresses to validate
+* `ldap_treebase` - LDAP tree to search for matching LDAP entries
+* `ldap_filter_attribute` - LDAP attribute attribute to search in LDAP entries for a match
+
+#### Collects
+* `valid_ldap_emails` - E-Mail addresses that have an associated LDAP entry
+* `invalid_ldap_emails` - E-Mail addresses that do not have an associated LDAP entry
 
 ## Dynamic Dialogs
 Information on methods provided for use with dynamic dialogs.
