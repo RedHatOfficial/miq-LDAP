@@ -56,6 +56,9 @@ def get_param(param)
 end
 
 begin
+  # If there isn't a vmdb_object_type yet just exit. The method will be recalled with an vmdb_object_type
+  exit MIQ_OK unless $evm.root['vmdb_object_type']
+  
   $evm.log(:info, "$evm.root => #{$evm.root}")                            if @DEBUG
   $evm.root.attributes.each { |k,v| $evm.log(:info, "  #{k} => #{v}") }   if @DEBUG
   $evm.log(:info, "$evm.object => #{$evm.object}")                        if @DEBUG

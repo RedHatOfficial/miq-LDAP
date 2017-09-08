@@ -56,6 +56,9 @@ def get_param(param)
 end
 
 begin
+  # If there isn't a vmdb_object_type yet just exit. The method will be recalled with an vmdb_object_type
+  exit MIQ_OK unless $evm.root['vmdb_object_type']
+  
   # get the parameters
   ldap_entries = get_param(:ldap_entries)
   error("ldap_entries parameter not found") if ldap_entries.nil?
