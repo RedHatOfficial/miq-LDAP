@@ -20,7 +20,7 @@
 # SETS
 #   EVM OBJECT
 #     ldap_entries - the ldap entries found for the given VM
-@DEBUG = true
+@DEBUG = false
 
 require 'rubygems'
 require 'net/ldap'
@@ -147,6 +147,7 @@ begin
     # else error
     if ldap_entries.size > 0
       $evm.object['ldap_entries'] = ldap_entries
+      $evm.log(:info, "ldap_entries => #{ldap_entries}")
     else
       error("LDAP could not find any entries for #{ldap_filter_attribute}=#{ldap_filter_value}")
     end
