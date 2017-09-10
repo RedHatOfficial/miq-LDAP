@@ -101,13 +101,18 @@ end
 # @see: get_vm_tags_and_attributes_from_ldap_attribute
 begin
   # get the parameters
-  if $evm.root['miq_provision']
-    vm = $evm.root['miq_provision'].vm
-  else
-    vm = get_param(:vm)
+  $evm.log(:info, "$evm.root['vmdb_object_type'] => '#{$evm.root['vmdb_object_type']}'.") if @DEBUG
+  case $evm.root['vmdb_object_type']
+    when 'miq_provision'
+      miq_provision = $evm.root['miq_provision']
+      vm            = miq_provision.vm
+    when 'vm'
+      vm = $evm.root['vm']
+    else
+      error("Can not handle vmdb_object_type: #{$evm.root['vmdb_object_type']}")
   end
-  error("vm parameter not found") if vm.nil?
-  $evm.log(:info, "vm=#{vm.name}") if @DEBUG
+  error("vm not found")     if vm.nil?
+  $evm.log(:info, "vm => #{vm.name}") if @DEBUG
   
   ldap_entry = get_param(:ldap_entry)
   error("ldap_entry parameter not found") if ldap_entry.nil?

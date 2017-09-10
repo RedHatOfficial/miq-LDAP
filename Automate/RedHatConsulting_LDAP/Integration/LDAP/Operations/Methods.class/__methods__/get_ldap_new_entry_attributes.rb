@@ -138,17 +138,19 @@ begin
 
   # get the VM to get the new LDAP entry attributes for and
   # get the service dialog attributes associated with that VM
-  if $evm.root['miq_provision']
-    $evm.log(:info, "Get VM and dialog attributes from $evm.root['miq_provision']") if @DEBUG
-    miq_provision     = $evm.root['miq_provision']
-    vm                = miq_provision.vm
-    dialog_attributes = miq_provision.options
-  else
-    $evm.log(:info, "Get VM from paramater and dialog attributes form $evm.root") if @DEBUG
-    vm                = get_param(:vm)
-    dialog_attributes = $evm.root.attributes
+  $evm.log(:info, "$evm.root['vmdb_object_type'] => '#{$evm.root['vmdb_object_type']}'.") if @DEBUG
+  case $evm.root['vmdb_object_type']
+    when 'miq_provision'
+      miq_provision     = $evm.root['miq_provision']
+      vm                = miq_provision.vm
+      dialog_attributes = miq_provision.options
+    when 'vm'
+      vm = $evm.root['vm']
+      dialog_attributes = $evm.root.attributes
+    else
+      error("Can not handle vmdb_object_type: #{$evm.root['vmdb_object_type']}")
   end
-  error("vm parameter not found")      if vm.blank?
+  error("vm parameter not found")                              if vm.blank?
   $evm.log(:info, "vm => #{vm.name}")                          if @DEBUG
   $evm.log(:info, "dialog_attributes => #{dialog_attributes}") if @DEBUG
   
@@ -162,7 +164,7 @@ begin
   #
   # determine the VM hostname
   vm_hostname = get_vm_hostname(vm)
-  $evm.log(:info, "vm_hostname='#{vm_hostname}'") if @DEBUG
+  $evm.log(:info, "vm_hostname => '#{vm_hostname}'") if @DEBUG
   
   # IMPLEMENTERS: DO NOT MODIFY
   #
