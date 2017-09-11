@@ -90,7 +90,7 @@ object:
       on_entry: 
       on_exit: 
       on_error: 
-      max_retries: 
+      max_retries: '5'
       max_time: 
   - field:
       aetype: state
