@@ -11,7 +11,7 @@
 #     valid_ldap_emails   - E-Mail addresses that have an associated LDAP entry
 #     invalid_ldap_emails - E-Mail addresses that do not have an associated LDAP entry
 #
-@DEBUG = true
+@DEBUG = false
 
 require 'rubygems'
 require 'net/ldap'
