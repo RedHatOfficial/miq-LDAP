@@ -18,7 +18,7 @@ object:
       datatype: array
       priority: 1
       owner: 
-      default_value: 
+      default_value: "[]"
       substitute: true
       message: create
       visibility: 
@@ -58,7 +58,7 @@ object:
       datatype: string
       priority: 3
       owner: 
-      default_value: 
+      default_value: mail
       substitute: true
       message: create
       visibility: 

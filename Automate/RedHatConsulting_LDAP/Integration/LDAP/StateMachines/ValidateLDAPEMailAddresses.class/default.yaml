@@ -9,8 +9,6 @@ object:
     description: 
   fields:
   - email_addresses:
-      value: "[itewk@redhat.com,itewk2@redhat.com]"
-  - ldap_treebase:
-      value: cn=users,cn=accounts,dc=rhc-lab,dc=iad,dc=redhat,dc=com
+      value: "[]"
   - ldap_filter_attribute:
       value: mail
