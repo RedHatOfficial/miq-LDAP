@@ -42,7 +42,7 @@ object:
       substitute: true
       message: create
       visibility: 
-      collect: 
+      collect: "/ldap_treebase = ldap_treebase"
       scope: 
       description: 
       condition: 
@@ -62,7 +62,7 @@ object:
       substitute: true
       message: create
       visibility: 
-      collect: 
+      collect: "/ldap_filter_attribute = ldap_filter_attribute"
       scope: 
       description: 
       condition: 
