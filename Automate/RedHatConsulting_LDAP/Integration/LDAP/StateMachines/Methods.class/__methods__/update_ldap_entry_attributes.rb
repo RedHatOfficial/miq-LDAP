@@ -126,6 +126,7 @@ begin
       # All values get added individually instead of multiple entries to the same :add operation.
       if ldap_attribute_values.kind_of?(Array) && ldap_attribute_values.size > 1
         ldap_attribute_values.each do |value|
+
           value = value.strip if value.is_a?(String)
           ldap_attribute_operations.push([:add, ldap_attribute, value])
         end
