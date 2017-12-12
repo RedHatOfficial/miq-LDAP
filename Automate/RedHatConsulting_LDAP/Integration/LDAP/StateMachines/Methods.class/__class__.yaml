@@ -29,5 +29,5 @@ object:
       on_entry: 
       on_exit: 
       on_error: 
-      max_retries: 
-      max_time: '120'
+      max_retries: '10'
+      max_time: ''
