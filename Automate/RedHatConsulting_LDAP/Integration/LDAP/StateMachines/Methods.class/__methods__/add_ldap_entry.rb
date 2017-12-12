@@ -165,7 +165,7 @@ begin
         #If no entry is found, this probably means we're waiting on LDAP replication. Retry and check again.
         $evm.set_state_var(:retry_method, true)
         $evm.log(:info, "New LDAP entry not found. Retrying in 60 seconds.")
-        automate_retry(60, "Waiting for replication between LDAP servers")
+        automate_retry(30, "Waiting for replication between LDAP servers")
       end
     else
       error("Unable to add LDAP entry for #{ldap_new_entry_dn}.  LDAP Error = #{ldap.get_operation_result.to_s}")
