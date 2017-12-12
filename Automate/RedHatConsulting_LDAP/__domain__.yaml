@@ -7,6 +7,8 @@ object:
     description: ManageIQ Automate Domain for reading and writing information from
       and to LDAP.
     display_name: LDAP
+    priority: 5
     enabled: true
+    tenant_id: 1000000000001
     source: user
     top_level_namespace: 
