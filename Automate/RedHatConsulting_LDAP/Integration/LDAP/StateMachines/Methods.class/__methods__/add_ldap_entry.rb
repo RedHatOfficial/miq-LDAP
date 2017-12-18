@@ -97,8 +97,8 @@ begin
   error("vm parmaeter not found") if vm.nil?
 
   #Determine whether this is our second time through the method, then clean up that state variable
-  retry_method = get_param(:retry_method) || false
-  set_state_var(:retry_method, false)
+  retry_add_ldap = get_param(:retry_add_ldap) || false
+  $evm.set_state_var(:retry_add_ldap, false)
   
   ldap_new_entry_attributes = get_param(:ldap_new_entry_attributes)
   error('ldap_new_entry_attributes parameter not found') if ldap_new_entry_attributes.nil?
@@ -140,31 +140,35 @@ begin
   $evm.log(:info, "LDAP bind to #{ldap_server} as #{ldap_username}") if @DEBUG
   add_success = false
   if ldap.bind
+    $evm.log(:info, "LDAP bound to #{ldap_server} as #{ldap_username}") if @DEBUG
     #If this is our first time through the method, add the entry
-    if retry_method == false
-      $evm.log(:info, "LDAP bound to #{ldap_server} as #{ldap_username}") if @DEBUG
-
-      # add the new LDAP entry
+    if retry_add_ldap == false
+      # add the new LDAP entry if we're not retrying to confirm creation
       add_success = ldap.add( :dn => ldap_new_entry_dn, :attributes => ldap_new_entry_attributes )
       $evm.log(:info, "LDAP added entry: { :dn => #{ldap_new_entry_dn}, :attributes => #{ldap_new_entry_attributes}, add_success => #{add_success} }") if @DEBUG
     end
     # if succesfully added new entry or retrying until we see the new entry, get that entry and "return it" by setting it on $evm.object
-    if add_success or retry_method
+    if add_success or retry_add_ldap
       # determine the VM hostname
       vm_hostname = get_vm_hostname(vm)
       $evm.log(:info, "vm_hostname='#{vm_hostname}'") if @DEBUG
-      
+
       filter       = Net::LDAP::Filter.eq(ldap_hostname_filter, vm_hostname)
       ldap_entries = ldap.search( :base => ldap_treebase, :filter => filter, :return_result => true )
-   
+
       # if found new LDAP entry
       # else retry
       if ldap_entries.size > 0
         $evm.object['ldap_entries'] = ldap_entries
       else
         #If no entry is found, this probably means we're waiting on LDAP replication. Retry and check again.
-        $evm.set_state_var(:retry_method, true)
+        $evm.set_state_var(:retry_add_ldap, true)
         $evm.log(:info, "New LDAP entry not found. Retrying in 60 seconds.")
+
+        #Set ldap variables we need again so they aren't lost in the retry
+        $evm.set_state_var('ldap_new_entry_attributes', ldap_new_entry_attributes)
+        $evm.set_state_var('ldap_new_entry_dn', ldap_new_entry_dn)
+
         automate_retry(30, "Waiting for replication between LDAP servers")
       end
     else
