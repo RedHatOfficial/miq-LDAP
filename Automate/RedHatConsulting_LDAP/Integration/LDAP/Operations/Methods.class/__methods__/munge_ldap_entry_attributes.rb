@@ -72,7 +72,7 @@ begin
 
   ldap_entry_attributes = {}
 
-  #If retiring else if provisioning
+  #If retiring else if provisioning or updating
   if $evm.root['vmdb_object_type'] == 'vm' and $evm.root['event_type'] == 'request_vm_retire'
     # IMPLIMENTORS: Modify as necessary
     # Use this section to define any LDAP modifications that should occur on retirement
