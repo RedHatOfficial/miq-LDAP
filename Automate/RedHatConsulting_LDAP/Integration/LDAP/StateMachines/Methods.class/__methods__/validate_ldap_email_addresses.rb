@@ -57,6 +57,72 @@ def get_param(param)
   return param_value
 end
 
+# Gets all of the Tags in a given Tag Category
+#
+# @param category Tag Category to get all of the Tags for
+#
+# @return Hash of Tag names mapped to Tag descriptions
+#
+# @source https://pemcg.gitbooks.io/mastering-automation-in-cloudforms-4-2-and-manage/content/using_tags_from_automate/chapter.html#_getting_the_list_of_tags_in_a_category
+def get_category_tags(category)
+  classification = $evm.vmdb(:classification).find_by_name(category)
+  tags = {}
+  $evm.vmdb(:classification).where(:parent_id => classification.id).each do |tag|
+    tags[tag.name] = tag.description
+  end
+
+  return tags
+end
+
+# Create a Tag in a given Category if it does not already exist
+#
+# @param category Tag Category to create the Tag in
+# @param tag      Tag to create in the given Tag Category
+#
+# @source https://pemcg.gitbooks.io/mastering-automation-in-cloudforms-4-2-and-manage/content/using_tags_from_automate/chapter.html
+def create_tag(category, tag)
+  create_tag_category(category)
+  tag_name = to_tag_name(tag)
+  unless $evm.execute('tag_exists?', category, tag_name)
+    $evm.execute('tag_create',
+                 category,
+                 :name => tag_name,
+                 :description => tag)
+  end
+end
+
+# Create a Tag  Category if it does not already exist
+#
+# @param category     Tag Category to create
+# @param description  Tag Category description.
+#                     Optional
+#                     Defaults to the `category`
+# @param single_value True if a resource can only have one tag from this category,
+#                     False if a resource can have multiple tags from this category.
+#                     Optional.
+#                     Defaults to `false`
+#
+# @source https://pemcg.gitbooks.io/mastering-automation-in-cloudforms-4-2-and-manage/content/using_tags_from_automate/chapter.html
+def create_tag_category(category, description = nil, single_value = false)
+  category_name = to_tag_name(category)
+  unless $evm.execute('category_exists?', category_name)
+    $evm.execute('category_create',
+                 :name => category_name,
+                 :single_value => single_value,
+                 :perf_by_tag => false,
+                 :description => description || category)
+  end
+end
+
+# Takes a string and makes it a valid tag name
+#
+# @param str String to turn into a valid Tag name
+#
+# @return Given string transformed into a valid Tag name
+def to_tag_name(str)
+  return str.downcase.gsub(/[^a-z0-9_]+/,'_')
+end
+
 # Validates that there is an LDAP entry for a given treebase, attribute, and attribute value.
 #
 # @param ldap_treebase         Search this treebase for LDAP entires with the given LDAP attribute value
@@ -65,31 +131,44 @@ end
 #
 # @return true if there is an LDAP entry for the given LDAP entry value, false otherwise
 def validate_ldap_entry_exists_for_ldap_attribute_value(ldap_treebase, ldap_filter_attribute, ldap_filter_value)
-  $evm.log(:info, "ldap_filter_value => #{ldap_filter_value}") if @DEBUG
-  
-  # set instantiate paramaters
-  $evm.root[:ldap_treebase]         = ldap_treebase
-  $evm.root[:ldap_filter_attribute] = ldap_filter_attribute
-  $evm.root[:ldap_filter_value]     = ldap_filter_value
+	valid_email_category_name = "valid_emails"
 
-  # instantiate
-  begin
-    $evm.instantiate('/Integration/LDAP/StateMachines/GetLDAPEntries/Default')
-  ensure
-    # cleanup root
-    $evm.root['ae_result']            = nil
-    $evm.root['ae_reason']            = nil
-    
-    $evm.root[:ldap_treebase]         = nil
-    $evm.root[:ldap_filter_attribute] = nil
-    $evm.root[:ldap_filter_value]     = nil
+  #If we have already validated this email address, we assume it is still valid
+  #Else validate using LDAP and cache result if valid
+  if $evm.execute('tag_exists?', valid_email_category_name, to_tag_name(ldap_filter_value))
+    return true
+  else
+    $evm.log(:info, "ldap_filter_value => #{ldap_filter_value}") if @DEBUG
+ 
+    # set instantiate paramaters
+    $evm.root[:ldap_treebase]         = ldap_treebase
+    $evm.root[:ldap_filter_attribute] = ldap_filter_attribute
+    $evm.root[:ldap_filter_value]     = ldap_filter_value
+
+    # instantiate
+    begin
+      $evm.instantiate('/Integration/LDAP/StateMachines/GetLDAPEntries/Default')
+    ensure
+      # cleanup root
+      $evm.root['ae_result']            = nil
+      $evm.root['ae_reason']            = nil
+ 
+      $evm.root[:ldap_treebase]         = nil
+      $evm.root[:ldap_filter_attribute] = nil
+      $evm.root[:ldap_filter_value]     = nil
+    end
+
+    # get results
+    ldap_entries = get_param('ldap_entries')
+    $evm.log(:info, "ldap_entries => #{ldap_entries}") if @DEBUG
+ 
+    is_valid = ldap_entries && !ldap_entries.empty?
+    if is_valid
+      create_tag(valid_email_category_name, ldap_filter_value)
+    end
+
+    return is_valid
   end
-  
-  # get results
-  ldap_entries = get_param('ldap_entries')
-  $evm.log(:info, "ldap_entries => #{ldap_entries}") if @DEBUG
-  
-  return ldap_entries && !ldap_entries.empty?
 end
 
 begin
