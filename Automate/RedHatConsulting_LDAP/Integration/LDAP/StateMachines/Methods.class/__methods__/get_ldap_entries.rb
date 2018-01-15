@@ -137,7 +137,7 @@ begin
   # else error binding
   $evm.log(:info, "LDAP bind to #{ldap_server} as #{ldap_username}") if @DEBUG
   if ldap.bind
-    $evm.log(:info, "LDAB bound to #{ldap_server} as #{ldap_username}") if @DEBUG
+    $evm.log(:info, "LDAP bound to #{ldap_server} as #{ldap_username}") if @DEBUG
     
     # get the LDAP entires
     filter = Net::LDAP::Filter.eq(ldap_filter_attribute, ldap_filter_value)
