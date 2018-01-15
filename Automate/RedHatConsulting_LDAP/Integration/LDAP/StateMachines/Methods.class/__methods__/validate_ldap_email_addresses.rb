@@ -16,6 +16,8 @@
 require 'rubygems'
 require 'net/ldap'
 
+VALID_EMAIL_CATEGORY_NAME = "valid_emails"
+
 # Log an error and exit.
 #
 # @param msg Message to error with
@@ -131,11 +133,10 @@ end
 #
 # @return true if there is an LDAP entry for the given LDAP entry value, false otherwise
 def validate_ldap_entry_exists_for_ldap_attribute_value(ldap_treebase, ldap_filter_attribute, ldap_filter_value)
-	valid_email_category_name = "valid_emails"
 
   #If we have already validated this email address, we assume it is still valid
   #Else validate using LDAP and cache result if valid
-  if $evm.execute('tag_exists?', valid_email_category_name, to_tag_name(ldap_filter_value))
+  if $evm.execute('tag_exists?', VALID_EMAIL_CATEGORY_NAME, to_tag_name(ldap_filter_value))
     return true
   else
     $evm.log(:info, "ldap_filter_value => #{ldap_filter_value}") if @DEBUG
@@ -164,7 +165,7 @@ def validate_ldap_entry_exists_for_ldap_attribute_value(ldap_treebase, ldap_filt
  
     is_valid = ldap_entries && !ldap_entries.empty?
     if is_valid
-      create_tag(valid_email_category_name, ldap_filter_value)
+      create_tag(VALID_EMAIL_CATEGORY_NAME, ldap_filter_value)
     end
 
     return is_valid
