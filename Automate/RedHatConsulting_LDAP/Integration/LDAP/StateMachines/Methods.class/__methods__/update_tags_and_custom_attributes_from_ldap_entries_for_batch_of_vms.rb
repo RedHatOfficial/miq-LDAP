@@ -96,11 +96,13 @@ begin
   $evm.log(:info, "{ :vm_ids => #{vm_ids} }") if @DEBUG
   
   # update each VM in the current container of VMs
+  $evm.log(:info, "START: Update VM Tags and Custom Attributes from LDAP Entries for: { :vm_ids => #{vm_ids} }")
   update_results = {}
   vm_ids.each do |vm_id|
     vm = $evm.vmdb('vm').find_by_id(vm_id)
     update_results[vm.name] = update_vm_tags_and_custom_attributes_from_ldap_entries(vm)
   end
+  $evm.log(:info, "END: Update VM Tags and Custom Attributes from LDAP Entries for: { :vm_ids => #{vm_ids} }")
   
   $evm.log(:info, "{ update_results => #{update_results} }") if @DEBUG
 end
