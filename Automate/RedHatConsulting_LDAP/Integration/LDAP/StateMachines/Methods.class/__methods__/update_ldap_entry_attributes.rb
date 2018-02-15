@@ -140,7 +140,7 @@ begin
       ldap_attribute_values = ldap_attribute_values.strip if ldap_attribute_values.is_a?(String)
       ldap_attribute_operations.push([:replace, ldap_attribute, ldap_attribute_values])
     else
-      error("Could not calculate LDAP operation for LDAP entry attribute (#{ldap_attribute}). This should never happen.")
+      error("Could not calculate LDAP operation for LDAP entry attribute (#{ldap_attribute}). This should never happen. { ldap_attribute_values => '#{ldap_attribute_values}',  ldap_entry[ldap_attribute] => '#{ldap_entry[ldap_attribute]}' }")
     end
   end
   $evm.log(:info, "ldap_attribute_operations => #{ldap_attribute_operations}") if @DEBUG
