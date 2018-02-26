@@ -1,4 +1,4 @@
-# Gets the value for a given LDAP entry attribute.
+# Creates a dialog field for a given LDAP entry attribute.
 #
 # NOTE:
 #   This method depends on the `get_ldap_entries_attributes` method to be setting the `dialog_ldap_entries_attributes`
@@ -7,10 +7,12 @@
 #
 # EXPECTED
 #   EVM STATE || EVM CURRENT || EVM OBJECT || EVM ROOT
-#     dialog_value_ldap_entry_attribute_name - LDAP entry attribute name to get the value for
+#     dialog_value_ldap_entry_attribute_name        - LDAP entry attribute name to get the value for
+#     dialog_value_ldap_entry_attribute_value_regex - Optional. Regex with a single capture group used to filter and parse the values of the matched LDAP entry attribute name
 #
 #   EVM ROOT
 #     dialog_ldap_entries_attributes - Dialog element that has all of the existing LDAP entry attributes in YAML format.
+#     additional_options             - Optional. Additional options to use when creating dialog field. Makes the dialog field a drop down list if set.
 #
 @DEBUG = false
 
@@ -66,19 +68,35 @@ begin
   
   ldap_entry_attribute_name = get_param(:dialog_value_ldap_entry_attribute_name)
   error("ldap_entry_attribute_name parameter not set") if ldap_entry_attribute_name.blank?
+  $evm.log(:info, "ldap_entry_attribute_name => #{ldap_entry_attribute_name}") if @DEBUG
   
-  ldap_entries_attributes = $evm.root['dialog_ldap_entries_attributes']
+  ldap_entry_attribute_value_regex = get_param(:dialog_value_ldap_entry_attribute_value_regex)
+  $evm.log(:info, "ldap_entry_attribute_value_regex => #{ldap_entry_attribute_value_regex}") if @DEBUG
+  
+  ldap_entries_attributes = get_param(:dialog_ldap_entries_attributes)
   $evm.log(:info, "ldap_entries_attributes => #{ldap_entries_attributes}") if @DEBUG
   
-  if !ldap_entries_attributes.blank?
+  # if no ldap entry attributes to pull attribute values from then just exit until filled
+  # else create the dialog field
+  if ldap_entries_attributes.blank?
+    $evm.log(:info, "exiting since ldap_entries_attributes is currently blank")
+    exit MIQ_OK
+  else
     ldap_entries_attributes = YAML.load(ldap_entries_attributes)
     
     if ldap_entries_attributes.length == 1
       dialog_field_value = ldap_entries_attributes[0][ldap_entry_attribute_name.to_sym]
+      $evm.log(:info, "pre mutation: dialog_field_value => #{dialog_field_value}") if @DEBUG
       
       if !dialog_field_value.blank?
+        # if value regex given then select only the values matching the given regex
+        if !ldap_entry_attribute_value_regex.blank?
+          dialog_field_value = dialog_field_value.map { |value| value =~ /#{ldap_entry_attribute_value_regex}/i; $1 if $1 }.compact
+          $evm.log(:info, "post regex map: dialog_field_value => #{dialog_field_value}") if @DEBUG
+        end
+        
         if dialog_field_value.length == 1
-         dialog_field_value = dialog_field_value[0]
+          dialog_field_value = dialog_field_value[0]
         else
           dialog_field_value = dialog_field_value.join("\n")
         end
@@ -88,12 +106,29 @@ begin
     else
       dialog_field_value = ''
     end
-  else
-    dialog_field_value = ''
   end
+  $evm.log(:info, "post mutation: dialog_field_value => #{dialog_field_value}") if @DEBUG
   
-  dialog_field              = $evm.object
-  dialog_field["data_type"] = "string"
-  dialog_field["required"]  = false
-  dialog_field["value"]     = dialog_field_value
+  additional_options = get_param(:additional_options)
+  $evm.log(:info, "additional_options => #{additional_options}") if @DEBUG
+  
+  # if no additional options then just create a single value dialog field
+  # else create a multiple value dialog field
+  if additional_options.blank?
+    dialog_field              = $evm.object
+    dialog_field["data_type"] = "string"
+    dialog_field["value"]     = dialog_field_value
+    
+    $evm.log(:info, "dialog_field['value'] => #{dialog_field['value']}") if @DEBUG
+  else
+    values = additional_options.dup
+    values[dialog_field_value] = dialog_field_value
+    
+    dialog_field                  = $evm.object
+    dialog_field["data_type"]     = "string"
+    dialog_field["values"]        = values
+    dialog_field["default_value"] = dialog_field_value
+    
+    $evm.log(:info, "dialog_field['values'] => #{dialog_field['values']}") if @DEBUG
+  end
 end
