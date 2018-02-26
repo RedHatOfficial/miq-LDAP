@@ -76,7 +76,5 @@ begin
   
   dialog_field              = $evm.object
   dialog_field["data_type"] = 'string'
-  dialog_field["read_only"] = true
-  dialog_field["visible"]   = true
   dialog_field["value"]     = ldap_entries_attributes.to_yaml
 end
