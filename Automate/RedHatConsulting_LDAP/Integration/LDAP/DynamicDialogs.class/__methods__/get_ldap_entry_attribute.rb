@@ -79,7 +79,7 @@ begin
   # if no ldap entry attributes to pull attribute values from then just exit until filled
   # else create the dialog field
   if ldap_entries_attributes.blank?
-    $evm.log(:info, "exiting since ldap_entries_attributes is currenlty blank")
+    $evm.log(:info, "exiting since ldap_entries_attributes is currently blank")
     exit MIQ_OK
   else
     ldap_entries_attributes = YAML.load(ldap_entries_attributes)
