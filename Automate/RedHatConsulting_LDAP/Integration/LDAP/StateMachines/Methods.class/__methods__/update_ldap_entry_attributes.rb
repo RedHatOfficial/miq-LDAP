@@ -116,6 +116,9 @@ begin
   ldap_entry_attributes.each do |ldap_attribute, ldap_attribute_values|
     $evm.log(:info, "{ ldap_attribute => '#{ldap_attribute}', new_value => #{ldap_attribute_values}, current_value => #{ldap_entry[ldap_attribute]} }") if @DEBUG
     
+    # LDAP treats all values as arrays so any single values should be transformed into an array
+    ldap_attribute_values = [ldap_attribute_values] if ldap_attribute_values.is_a?(String)
+    
     # if remove existing attribute
     # else if add new attribute
     # else if update existing attribute
