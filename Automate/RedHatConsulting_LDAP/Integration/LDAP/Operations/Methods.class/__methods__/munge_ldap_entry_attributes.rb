@@ -115,7 +115,7 @@ begin
         # IMPLIMENTORS: Modify as necessary
         #               Get additional parameters
       when 'automation_task'
-        $evm.log(:info, "Get VM paramater and dialog attributes form $evm.root") if @DEBUG
+        $evm.log(:info, "Get VM parameter and dialog attributes from $evm.root") if @DEBUG
         automation_task = $evm.root['automation_task']
         dump_object("automation_task", automation_task) if @DEBUG
       
