@@ -105,9 +105,9 @@ begin
           "['ext_management_system', 'ems_cluster', 'host', 'service_reconfigure_task', 'automation_task'].")
   end
   
-  # get the automationr request to invoke in batches
+  # get the automation request to invoke in batches
   automation_request_instance_name = $evm.inputs['automation_request_instance_name']
-  error("automation_request_instance_name msut be specified") if automation_request_instance_name.blank?
+  error("automation_request_instance_name must be specified") if automation_request_instance_name.blank?
   $evm.log(:info, "automation_request_instance_name = #{automation_request_instance_name}") if @DEBUG
   
   # determine the size of each batch of VMs to process
@@ -117,7 +117,8 @@ begin
   
   # update the VMs in asyncronous batches
   $evm.log(:info, "VMs to Update in Batches: { vms => #{vms.collect { |vm| vm.name }} }") if @DEBUG
-  vms.each_slice(vms_batch_size) do |vms_batch|
+  vms.each_slice(vms_batch_size) do |vms_batch|+  error("automation_request_instance_name msut be specified") if automation_request_instance_name.blank?
+￼
     vm_ids = vms_batch.collect { |vm| vm.id }
     execute_automation_request_for_batch_of_vms(vm_ids, automation_request_instance_name, additional_attrs)
   end
