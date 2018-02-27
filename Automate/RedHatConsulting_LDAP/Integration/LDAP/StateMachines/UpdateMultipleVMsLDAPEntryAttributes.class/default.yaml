@@ -8,5 +8,5 @@ object:
     inherits: 
     description: 
   fields:
-  - Execute:
-      value: "/Integration/LDAP/StateMachines/Methods/execute_update_tags_and_custom_attributes_from_ldap_entries_in_batches"
+  - execute:
+      value: "/Integration/LDAP/StateMachines/Methods/execute_update_ldap_entry_attributes_in_batches"
