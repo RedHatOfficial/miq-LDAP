@@ -132,31 +132,11 @@ object:
       max_retries: 
       max_time: 
   - field:
-      aetype: method
-      name: validate_attributes
+      aetype: attribute
+      name: dialog_value_ldap_entry_attribute_value_regex
       display_name: 
       datatype: string
       priority: 7
-      owner: 
-      default_value: 
-      substitute: true
-      message: create
-      visibility: 
-      collect: 
-      scope: 
-      description: 
-      condition: 
-      on_entry: 
-      on_exit: 
-      on_error: skip_to_state(next_state => "execute")
-      max_retries: 
-      max_time: 
-  - field:
-      aetype: state
-      name: get_ldap_entries
-      display_name: 
-      datatype: string
-      priority: 8
       owner: 
       default_value: 
       substitute: true
@@ -173,10 +153,70 @@ object:
       max_time: 
   - field:
       aetype: method
-      name: execute
+      name: validate_attributes
+      display_name: 
+      datatype: string
+      priority: 8
+      owner: 
+      default_value: 
+      substitute: true
+      message: create
+      visibility: 
+      collect: 
+      scope: 
+      description: 
+      condition: 
+      on_entry: 
+      on_exit: 
+      on_error: skip_to_state(next_state => "get_additional_options")
+      max_retries: 
+      max_time: 
+  - field:
+      aetype: state
+      name: get_ldap_entries
       display_name: 
       datatype: string
       priority: 9
+      owner: 
+      default_value: 
+      substitute: true
+      message: create
+      visibility: 
+      collect: 
+      scope: 
+      description: 
+      condition: 
+      on_entry: 
+      on_exit: 
+      on_error: 
+      max_retries: 
+      max_time: 
+  - field:
+      aetype: method
+      name: get_additional_options
+      display_name: 
+      datatype: string
+      priority: 10
+      owner: 
+      default_value: 
+      substitute: true
+      message: create
+      visibility: 
+      collect: "/additional_options = additional_options"
+      scope: 
+      description: 
+      condition: 
+      on_entry: 
+      on_exit: 
+      on_error: 
+      max_retries: 
+      max_time: 
+  - field:
+      aetype: method
+      name: execute
+      display_name: 
+      datatype: string
+      priority: 11
       owner: 
       default_value: 
       substitute: true
