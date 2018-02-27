@@ -21,21 +21,21 @@ def error(msg)
   exit MIQ_STOP
 end
 
-# IMPLIMENTORS: DO NOT MODIFY
+# IMPLEMENTORS: DO NOT MODIFY
 def dump_root
   $evm.log("info", "Listing Root Object Attributes:") 
   $evm.root.attributes.sort.each { |k, v| $evm.log("info", "\t#{k}: #{v}") }
   $evm.log("info", "===========================================") 
 end
 
-# IMPLIMENTORS: DO NOT MODIFY
+# IMPLEMENTORS: DO NOT MODIFY
 def dump_object(object_string, object)
   $evm.log("info", "Listing #{object_string} Attributes:") 
   object.attributes.sort.each { |k, v| $evm.log("info", "\t#{k}: #{v}") }
   $evm.log("info", "===========================================") 
 end
 
-# IMPLIMENTORS: DO NOT MODIFY
+# IMPLEMENTORS: DO NOT MODIFY
 #
 # There are many ways to attempt to pass parameters in Automate.
 # This function checks all of them in priorty order as well as checking for symbol or string.
