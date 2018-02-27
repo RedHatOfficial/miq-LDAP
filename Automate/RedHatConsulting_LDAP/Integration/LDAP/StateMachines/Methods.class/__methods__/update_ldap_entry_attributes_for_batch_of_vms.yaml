@@ -3,7 +3,7 @@ object_type: method
 version: 1.0
 object:
   attributes:
-    name: update_multiple_vms_tags_and_custom_attributes_from_ldap_entries
+    name: update_ldap_entry_attributes_for_batch_of_vms
     display_name: 
     description: 
     scope: instance
