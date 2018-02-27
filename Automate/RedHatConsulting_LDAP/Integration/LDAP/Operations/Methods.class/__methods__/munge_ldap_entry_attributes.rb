@@ -19,6 +19,9 @@
 
 require 'rubygems'
 require 'net/ldap'
+require 'json'
+
+TECH_LEAD_BUSINESS_CATEGORY_PREFIX = "TechLead:"
 
 # IMPLEMENTERS: DO NOT MODIFY
 #
@@ -30,6 +33,22 @@ def error(msg)
   $evm.root['ae_result'] = 'error'
   $evm.root['ae_reason'] = msg.to_s
   exit MIQ_STOP
+end
+
+# IMPLEMENTERS: DO NOT MODIFY
+#
+def dump_root
+  $evm.log("info", "Listing Root Object Attributes:") 
+  $evm.root.attributes.sort.each { |k, v| $evm.log("info", "\t#{k}: #{v}") }
+  $evm.log("info", "===========================================") 
+end
+
+# IMPLEMENTERS: DO NOT MODIFY
+#
+def dump_object(object_string, object)
+  $evm.log("info", "Listing #{object_string} Attributes:") 
+  object.attributes.sort.each { |k, v| $evm.log("info", "\t#{k}: #{v}") }
+  $evm.log("info", "===========================================") 
 end
 
 # IMPLEMENTERS: DO NOT MODIFY
@@ -66,9 +85,7 @@ def get_param(param)
 end
 
 begin
-  $evm.log(:info, "START: EVM Root Dump") if @DEBUG
-  $evm.root.attributes.each { |k, v| $evm.log(:info, "  #{k} => #{v}") } if @DEBUG
-  $evm.log(:info, "END: EVM Root Dump") if @DEBUG
+  dump_root() if @DEBUG
 
   ldap_entry_attributes = {}
 
@@ -99,11 +116,28 @@ begin
  
         # IMPLIMENTORS: Modify as necessary
         #               Get additional parameters
+      when 'automation_task'
+        $evm.log(:info, "Get VM from paramater and dialog attributes form $evm.root") if @DEBUG
+        automation_task = $evm.root['automation_task']
+        dump_object("automation_task", automation_task) if @DEBUG
+      
+        vm      = get_param(:vm)
+      
+        # get dialog attributes
+        options           = get_param(:options)
+        options           = JSON.load(options)     if options && options.class == String
+        options           = options.symbolize_keys if options
+        dialog_attributes = options[:dialog]       if options
+      
+        # IMPLIMENTORS: Modify as necessary
+        #               Get additional parameters
       else
         error("Can not handle vmdb_object_type: #{$evm.root['vmdb_object_type']}")
     end
     error("vm parameter not found")      if vm.blank?
     error("dialog attributes not found") if dialog_attributes.blank?
+    
+    dialog_attributes = dialog_attributes.symbolize_keys
     $evm.log(:info, "vm => #{vm.name}")                          if @DEBUG
     $evm.log(:info, "dialog_attributes => #{dialog_attributes}") if @DEBUG
     
@@ -122,11 +156,13 @@ begin
     # IMPLEMENTERS: Modify as necessary
     #               This implementation returns the existing LDAP entry attributes without modification
     #
+    ldap_entry_attributes = {}
     ldap_entry.each do |ldap_attribute, ldap_attribute_values|
-      ldap_entry_attributes[ldap_attribute] = ldap_attribute_values
+      ldap_entry_attributes[ldap_attribute.to_sym] = ldap_attribute_values
       $evm.log(:info, "Set LDAP entry attribute to existing value: { ldap_attribute => #{ldap_attribute}, ldap_attribute_values => #{ldap_attribute_values} }") if @DEBUG
     end
- 
+    $evm.log(:info, "after merging in existing LDAP entry attributes: ldap_entry_attributes => #{ldap_entry_attributes}") if @DEBUG
+    
     # IMPLEMENTERS: Modify as necessary
     #               This implementation overrides any existing LDAP entry attributes with values from dialog elements with names that
     #               start with 'dialog_ldap_entry_attribute_'.
@@ -134,6 +170,7 @@ begin
     #
     # for each LDAP entry attribute dialog element
     dialog_attributes.select { |k, v| k.to_s.start_with?('dialog_ldap_entry_attribute_') }.each do |dialog_ldap_entry_attribute, dialog_ldap_entry_attribute_value|
+      $evm.log(:info, "LDAP entry attribute dialog element: { dialog_ldap_entry_attribute => #{dialog_ldap_entry_attribute}, dialog_ldap_entry_attribute_value => #{dialog_ldap_entry_attribute_value} }") if @DEBUG
       dialog_ldap_entry_attribute_name = dialog_ldap_entry_attribute.to_s.match(/dialog_ldap_entry_attribute_(.*)/i).captures[0]
       ldap_entry_attributes[dialog_ldap_entry_attribute_name] = dialog_ldap_entry_attribute_value.split("\n")
       $evm.log(:info, "Set LDAP entry attribute to value from dialog: { ldap_attribute => #{dialog_ldap_entry_attribute_name}, ldap_attribute_values => #{ldap_entry_attributes[dialog_ldap_entry_attribute_name]} }") if @DEBUG
@@ -144,5 +181,5 @@ begin
   #
   # return munged LDAP entry attributes
   $evm.object['ldap_entry_attributes'] = ldap_entry_attributes
-  $evm.log(:info, "$evm.object['ldap_entry_attributes']=#{$evm.object['ldap_entry_attributes']})") if @DEBUG
+  $evm.log(:info, "$evm.object['ldap_entry_attributes'] => #{$evm.object['ldap_entry_attributes']})") if @DEBUG
 end
