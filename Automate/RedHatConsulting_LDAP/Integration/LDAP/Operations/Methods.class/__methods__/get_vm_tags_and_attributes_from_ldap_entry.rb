@@ -7,9 +7,6 @@
 #   EVM STATE || EVM CURRENT || EVM OBJECT || EVM ROOT || $evm.root['miq_provision']
 #     vm - set to VM to get LDAP entries for
 #
-#   EVM STATE || EVM CURRENT || EVM OBJECT || EVM ROOT
-#     ldap_entries - LDAP entires to get the Tag Catigory(s) and Tag(s) for. 
-#
 # SETS
 #   EVM OBJECT
 #     :ldap_vm_tags - Hash of Tag Catigories to Tag(s) to assign to the given VM.

@@ -107,14 +107,14 @@ begin
     
     deletion_errors = []
     ldap_entries.each do |ldap_entry|
-      $evm.log(:info, "Delete LDAP entry: { :dn => #{ldap_entry.dn} }") if @DEBUG
-      delete_success = ldap.delete(:dn => ldap_entry.dn)
+      $evm.log(:info, "Delete LDAP entry: { :dn => #{ldap_entry[:dn]} }") if @DEBUG
+      delete_success = ldap.delete(:dn => ldap_entry[:dn])
       
       if delete_success
-        $evm.log(:info, "Successfully deleted LDAP entry: { :dn => #{ldap_entry.dn} }")
+        $evm.log(:info, "Successfully deleted LDAP entry: { :dn => #{ldap_entry[:dn]} }")
       else
         # collect errors
-        deletion_errors << "Failed to deleted LDAP entry: { :dn => #{ldap_entry.dn} }. This is typically either a permisisons issue. See LDAP server error logs for details."
+        deletion_errors << "Failed to deleted LDAP entry: { :dn => #{ldap_entry[:dn]} }. This is typically either a permisisons issue. See LDAP server error logs for details."
       end
     end
     

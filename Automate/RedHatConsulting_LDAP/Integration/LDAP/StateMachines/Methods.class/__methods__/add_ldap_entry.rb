@@ -87,6 +87,30 @@ def get_vm_hostname(vm)
   return hostname
 end
 
+# Takes an Array of Net::LDAP objects and turns them into hashes so that they can
+# be marshaled and unmarshaled.
+#
+# @param ldap_entries Array of Net:LDAP objects to turn into an Array of Hashes
+#
+# @return Array of Hashes created from the given Array of Net::LDAP objects
+def ldap_entries_to_hashes(ldap_entries)
+  ldap_entries_hashes = []
+  ldap_entries.each do |ldap_entry|
+    ldap_entry_hash = {}
+    ldap_entry.each do |ldap_attribute, ldap_attribute_value|
+      if ldap_attribute_value.is_a? Array
+        ldap_entry_hash[ldap_attribute.to_sym] = ldap_attribute_value.collect { |value| value.to_s }
+      else
+        ldap_entry_hash[ldap_attribute.to_sym] = ldap_attribute_value.to_s
+      end
+    end
+
+    ldap_entries_hashes.push(ldap_entry_hash)
+  end
+
+  return ldap_entries_hashes
+end
+
 begin
   # get parameters
   if $evm.root['miq_provision']
@@ -158,7 +182,7 @@ begin
       # if found new LDAP entry
       # else retry
       if ldap_entries.size > 0
-        $evm.object['ldap_entries'] = ldap_entries
+        $evm.object['ldap_entries'] = ldap_entries_to_hashes(ldap_entries)
         $evm.set_state_var(:retry_add_ldap, nil)
       else
         #If no entry is found, this probably means we're waiting on LDAP replication. Retry and check again.
