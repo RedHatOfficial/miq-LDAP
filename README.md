@@ -26,12 +26,12 @@ The high level features of this ManageIQ extension.
 * Dynamic dialog methods for populating drop down fields with LDAP entries using specified attributes as the value and description
 
 # Dependencies
-Dependencies of this ManageIQ extensions.
+Dependencies of this ManageIQ extension.
 
 ## Other Datastores
 These ManageIQ atuomate domains must also be installed for this datastore to function.
 
-* [RedHatConsulting_Utilities](https://github.com/rhtconsulting/miq-Utilities)
+* [RedHatConsulting_Utilities](https://github.com/RedHatOfficial/miq-Utilities)
 
 # Automate
 Information on the provided Automate.
@@ -52,12 +52,12 @@ Required to Override: **Maybe**
 ### get_vm_tags_and_attributes_from_ldap_entry
 Full Path: `LDAP/Integration/LDAP/Operations/Methods/get_ldap_new_entry_attributes`
 Required to Override: **Maybe**
-  * If want to update VM tags and custom attributes form LDAP entries
+  * If want to update VM tags and custom attributes from LDAP entries
 
 ### munge_ldap_entry_attributes
 Full Path: `LDAP/Integration/LDAP/Operations/Methods/get_ldap_new_entry_attributes`
 Required to Override: **Maybe**
-  * If want to update LDAP entriy attributes based on user imput to dialogs.
+  * If want to update LDAP entry attributes based on user input to dialogs.
 
 ## Requests
 Information on the provided Request entry points.
@@ -86,12 +86,12 @@ Updates the LDAP entry attributes for a given VM by munging the existing LDAP en
 ### UpdateMultipleVMsTagsAndCustomAttributesFromLDAPEntries
 Updates the tags and custom attributes on a collection of VMs using the LDAP entry attributes for each VM.
 
-For this to work `/LDAP/Integration/LDAP/Operations/Methods/get_vm_tags_and_attributes_from_ldap_entry` must be overwritten with the specifc business logic on which LDAP entry attributes should be syncronized to which VM tags and/or custom attributes.
+For this to work `/LDAP/Integration/LDAP/Operations/Methods/get_vm_tags_and_attributes_from_ldap_entry` must be overwritten with specifc business logic to determine which LDAP entry attributes should be synchronized to which VM tags and/or custom attributes.
 
 ### UpdateVMTagsAndCustomAttributesFromLDAPEntries
 Updates the tags and custom attributes on a VM using the LDAP entry attributes for that VM.
 
-For this to work `/LDAP/Integration/LDAP/Operations/Methods/get_vm_tags_and_attributes_from_ldap_entry` must be overwritten with the specifc business logic on which LDAP entry attributes should be syncronized to which VM tags and/or custom attributes.
+For this to work `/LDAP/Integration/LDAP/Operations/Methods/get_vm_tags_and_attributes_from_ldap_entry` must be overwritten with specific business logic to determine LDAP entry attributes should be synchronized to which VM tags and/or custom attributes.
 
 ### GetLDAPEntries
 Gets the LDAP entries in a given tree that have a given value for a given LDAP attribute.
@@ -129,7 +129,7 @@ See [Instance: get_ldap_entries_attributes](#instance-get_ldap_entries_attribute
 ### Method: get_ldap_entry_attribute
 Gets the value for the given LDAP entry attribute.
 
-This method depends on the [get_ldap_entries_attributes](#method-get_ldap_entries_attributes) method to be setting the `dialog_ldap_entries_attributes` field with a YAML value of all of the existing LDAP entry attributes to avoid having to query LDAP for the entries for mutliple dialog fields all relying on information from that entry.
+This method depends on the [get_ldap_entries_attributes](#method-get_ldap_entries_attributes) method setting the `dialog_ldap_entries_attributes` field with a YAML value of all of the existing LDAP entry attributes to avoid having to query LDAP for the entries for mutliple dialog fields all relying on information from that entry.
 
 ### Method: get_ldap_entries
 Returns a dynamic drop down dialog with all of the given LDAP entries using the value of the given attribute names for the drop down values and descriptions.
@@ -138,7 +138,7 @@ Returns a dynamic drop down dialog with all of the given LDAP entries using the 
 Helper method if implimenters want to add in their own attribute verification before retreiving LDAP entries.
 
 ### Instance: get_ldap_entries_attributes
-A hidden dialog field text area should be configured with the name `ldap_entries_attributes` that calls the this instance  so that the [get_ldap_entry_attribute](#method-get_ldap_entry_attribute) method can reference the output rather then having to make multiple LDAP calls.
+A hidden dialog field text area should be configured with the name `ldap_entries_attributes` that calls this instance so that the [get_ldap_entry_attribute](#method-get_ldap_entry_attribute) method can reference the output rather then having to make multiple LDAP calls.
 
 ### Instance: get_ldap_entry_attribute_description
 An example instance to show how to create a dynamic dialog field that is populated with the existing LDAP entry `description` attribute value for a given VM.
@@ -149,7 +149,7 @@ Requires that the dialog also has a hidden field that calls the [get_ldap_entrie
 0. Install dependencies
 1. Automate -> Import/Export
 2. Import Datastore via git
-3. Git URL: `https://github.com/rhtconsulting/miq-LDAP.git`
+3. Git URL: `https://github.com/RedHatOfficial/miq-LDAP.git`
 4. Submit
-5. Select Branc/Tag to syncronize with
+5. Select Branch/Tag to syncronize with
 6. Submit
