@@ -76,10 +76,12 @@ begin
   # narrow down to a single LDAP entry in the off chance there is more then one
   error("More then one existing LDAP_entry for VM (#{vm.name}) was found, unsure how to handle this case.") if ldap_entries.length > 1
   ldap_entry = ldap_entries[0]
+  ldap_entry = ldap_entry.map { |k,v| [k.downcase, v] }.to_h # ensure all keys are downcased for consistent comparisions
   $evm.log(:info, "ldap_entry => #{ldap_entry}") if @DEBUG
   
   # get the LDAP entry attributes to set
   ldap_entry_attributes = get_param(:ldap_entry_attributes)
+  ldap_entry_attributes = ldap_entry_attributes.map { |k,v| [k.downcase, v] }.to_h # ensure all keys are downcased for consistent comparisions
   error('ldap_entry_attributes parameter not found') if ldap_entry_attributes.nil?
   
   # determine the LDAP connection configuration information
@@ -114,6 +116,9 @@ begin
   # calculate LDAP operations based on current LDAP attributes and the given LDAP entry attributes
   ldap_attribute_operations = []
   ldap_entry_attributes.each do |ldap_attribute, ldap_attribute_values|
+    # ensure always dealing in symbols
+    ldap_attribute = ldap_attribute.to_sym
+
     $evm.log(:info, "{ ldap_attribute => '#{ldap_attribute}', new_value => #{ldap_attribute_values}, current_value => #{ldap_entry[ldap_attribute]} }") if @DEBUG
     
     # LDAP treats all values as arrays so any single values should be transformed into an array
@@ -156,11 +161,11 @@ begin
     if ldap.bind
       $evm.log(:info, "LDAP bound to #{ldap_server} as #{ldap_username}") if @DEBUG
     
-      $evm.log(:info, "Modify LDAP entry attributes: { :dn => #{ldap_entry.dn} }") if @DEBUG
-      modify_success = ldap.modify(:dn => ldap_entry.dn, :operations => ldap_attribute_operations)
+      $evm.log(:info, "Modify LDAP entry attributes: { :dn => #{ldap_entry[:dn]} }") if @DEBUG
+      modify_success = ldap.modify(:dn => ldap_entry[:dn], :operations => ldap_attribute_operations)
       
       if modify_success
-        $evm.log(:info, "Modified LDAP entry attributes: { :dn => #{ldap_entry.dn}, ldap_attribute_operations => #{ldap_attribute_operations} }")
+        $evm.log(:info, "Modified LDAP entry attributes: { :dn => #{ldap_entry[:dn]}, ldap_attribute_operations => #{ldap_attribute_operations} }")
       else
         error("Failed to perform LDAP entry attribute operations. LDAP Error = #{ldap.get_operation_result.to_s}")
       end
@@ -168,6 +173,6 @@ begin
       error("LDAP could not bind to #{ldap_server} as #{ldap_username}.  LDAP Error = #{ldap.get_operation_result.to_s}")
     end
   else
-    $evm.log(:info, "No LDAP entry attribute operations to perform on DN: #{ldap_entry.dn}")
+    $evm.log(:info, "No LDAP entry attribute operations to perform on DN: #{ldap_entry[:dn]}")
   end
 end

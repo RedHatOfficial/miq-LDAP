@@ -9,9 +9,6 @@
 #
 @DEBUG = false
 
-require 'rubygems'
-require 'net/ldap'
-
 # Log an error and exit.
 #
 # @param msg Message to error with
@@ -59,6 +56,7 @@ begin
   
   # get the parameters
   ldap_entries = get_param(:ldap_entries)
+  $evm.log(:info, "ldap_entries => #{ldap_entries}") if @DEBUG
   
   values = {}
   if ldap_entries
@@ -68,9 +66,9 @@ begin
     dialog_description_ldap_entry_attribute_name = get_param(:dialog_description_ldap_entry_attribute_name) || dialog_value_ldap_entry_attribute_name
   
     values = {}
-    ldap_entries.each do |entry|
-      value       = entry[dialog_value_ldap_entry_attribute_name][0]
-      description = entry[dialog_description_ldap_entry_attribute_name][0]
+    ldap_entries.each do |ldap_entry|
+      value         = ldap_entry[dialog_value_ldap_entry_attribute_name.to_sym][0]
+      description   = ldap_entry[dialog_description_ldap_entry_attribute_name.to_sym][0]
       values[value] = description
     end
     $evm.log(:info, "values => #{values}") if @DEBUG
@@ -83,4 +81,6 @@ begin
   dialog_field["data_type"]  = "string"
   dialog_field["required"]   = true
   dialog_field["values"]     = values
+  
+  $evm.log(:info, "dialog_field['values'] => #{dialog_field['values']}") if @DEBUG
 end

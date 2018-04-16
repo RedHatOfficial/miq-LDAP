@@ -102,9 +102,9 @@ begin
   # Collect all of the Tags and Custom Attributes to apply to the VM
   ldap_vm_tags = {}
   ldap_vm_custom_attributes = {}
-  ldap_entries.each do |entry|
+  ldap_entries.each do |ldap_entry|
     # get the VM Tags and Attributes for the given VM and LDAP entry
-    entry_ldap_vm_tags, entry_ldap_vm_custom_attributes = get_vm_tags_and_attributes_from_ldap_entry(vm, entry)
+    entry_ldap_vm_tags, entry_ldap_vm_custom_attributes = get_vm_tags_and_attributes_from_ldap_entry(vm, ldap_entry)
     $evm.log(:info, "entry_ldap_vm_tags=#{entry_ldap_vm_tags}")                           if @DEBUG
     $evm.log(:info, "entry_ldap_vm_custom_attributes=#{entry_ldap_vm_custom_attributes}") if @DEBUG
     

@@ -89,6 +89,30 @@ def get_param(param)
   return param_value
 end
 
+# Takes an Array of Net::LDAP objects and turns them into hashes so that they can
+# be marshaled and unmarshaled.
+#
+# @param ldap_entries Array of Net:LDAP objects to turn into an Array of Hashes
+#
+# @return Array of Hashes created from the given Array of Net::LDAP objects
+def ldap_entries_to_hashes(ldap_entries)
+  ldap_entries_hashes = []
+  ldap_entries.each do |ldap_entry|
+    ldap_entry_hash = {}
+    ldap_entry.each do |ldap_attribute, ldap_attribute_value|
+      if ldap_attribute_value.is_a? Array
+        ldap_entry_hash[ldap_attribute.to_sym] = ldap_attribute_value.collect { |value| value.to_s }
+      else
+        ldap_entry_hash[ldap_attribute.to_sym] = ldap_attribute_value.to_s
+      end
+    end
+
+    ldap_entries_hashes.push(ldap_entry_hash)
+  end
+
+  return ldap_entries_hashes
+end
+
 begin
   # determine the LDAP connection configuration information
   ldap_config = get_ldap_config()
@@ -146,7 +170,7 @@ begin
     # if found LDAP entries
     # else error
     if ldap_entries.size > 0
-      $evm.object['ldap_entries'] = ldap_entries
+      $evm.object['ldap_entries'] = ldap_entries_to_hashes(ldap_entries)
       $evm.log(:info, "ldap_entries => #{ldap_entries}")
     else
       error("LDAP could not find any entries for #{ldap_filter_attribute}=#{ldap_filter_value}")
