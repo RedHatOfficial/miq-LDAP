@@ -86,7 +86,7 @@ Updates the LDAP entry attributes for a given VM by munging the existing LDAP en
 ### UpdateMultipleVMsTagsAndCustomAttributesFromLDAPEntries
 Updates the tags and custom attributes on a collection of VMs using the LDAP entry attributes for each VM.
 
-For this to work `/LDAP/Integration/LDAP/Operations/Methods/get_vm_tags_and_attributes_from_ldap_entry` must be overwritten with specifc business logic to determine which LDAP entry attributes should be synchronized to which VM tags and/or custom attributes.
+For this to work `/LDAP/Integration/LDAP/Operations/Methods/get_vm_tags_and_attributes_from_ldap_entry` must be overwritten with specific business logic to determine which LDAP entry attributes should be synchronized to which VM tags and/or custom attributes.
 
 ### UpdateVMTagsAndCustomAttributesFromLDAPEntries
 Updates the tags and custom attributes on a VM using the LDAP entry attributes for that VM.
