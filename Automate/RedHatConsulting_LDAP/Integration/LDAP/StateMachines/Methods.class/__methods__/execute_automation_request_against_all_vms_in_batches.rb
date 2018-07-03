@@ -118,7 +118,6 @@ begin
   # update the VMs in asyncronous batches
   $evm.log(:info, "VMs to Update in Batches: { vms => #{vms.collect { |vm| vm.name }} }") if @DEBUG
   vms.each_slice(vms_batch_size) do |vms_batch|+  error("automation_request_instance_name msut be specified") if automation_request_instance_name.blank?
-￼
     vm_ids = vms_batch.collect { |vm| vm.id }
     execute_automation_request_for_batch_of_vms(vm_ids, automation_request_instance_name, additional_attrs)
   end
