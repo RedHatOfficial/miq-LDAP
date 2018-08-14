@@ -72,7 +72,7 @@ begin
       values[value] = description
     end
     $evm.log(:info, "values => #{values}") if @DEBUG
-    values[nil] = ''
+    values[nil] = '<Choose>'
   end
   
   dialog_field               = $evm.object
