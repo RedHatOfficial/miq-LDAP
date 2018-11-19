@@ -142,9 +142,9 @@ def validate_ldap_entry_exists_for_ldap_attribute_value(ldap_treebase, ldap_filt
     $evm.log(:info, "ldap_filter_value => #{ldap_filter_value}") if @DEBUG
  
     # set instantiate paramaters
-    $evm.root[:ldap_treebase]         = ldap_treebase
-    $evm.root[:ldap_filter_attribute] = ldap_filter_attribute
-    $evm.root[:ldap_filter_value]     = ldap_filter_value
+    $evm.root['ldap_treebase']         = ldap_treebase
+    $evm.root['ldap_filter_attribute'] = ldap_filter_attribute
+    $evm.root['ldap_filter_value']     = ldap_filter_value
 
     # instantiate
     begin
@@ -154,9 +154,9 @@ def validate_ldap_entry_exists_for_ldap_attribute_value(ldap_treebase, ldap_filt
       $evm.root['ae_result']            = nil
       $evm.root['ae_reason']            = nil
  
-      $evm.root[:ldap_treebase]         = nil
-      $evm.root[:ldap_filter_attribute] = nil
-      $evm.root[:ldap_filter_value]     = nil
+      $evm.root['ldap_treebase']         = nil
+      $evm.root['ldap_filter_attribute'] = nil
+      $evm.root['ldap_filter_value']     = nil
     end
 
     # get results
