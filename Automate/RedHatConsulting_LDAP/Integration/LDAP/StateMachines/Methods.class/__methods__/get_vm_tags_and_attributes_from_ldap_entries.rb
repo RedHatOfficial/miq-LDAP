@@ -73,15 +73,15 @@ def get_vm_tags_and_attributes_from_ldap_entry(vm, ldap_entry)
   $evm.log(:info, "{ vm => '#{vm.name}', ldap_entry='#{ldap_entry}'") if @DEBUG
   
   # set params
-  $evm.root[:vm]         = vm
-  $evm.root[:ldap_entry] = ldap_entry
+  $evm.root['vm']         = vm
+  $evm.root['ldap_entry'] = ldap_entry
   
   # call method
   result = $evm.instantiate("#{GET_VM_TAGS_FROM_LDAP_ENTRY_URI}")
   
   # clean up params
-  $evm.root[:vm]         = nil
-  $evm.root[:ldap_entry] = nil
+  $evm.root['vm']         = nil
+  $evm.root['ldap_entry'] = nil
   
   # return result
   return result[:ldap_vm_tags], result[:ldap_vm_custom_attributes]
