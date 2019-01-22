@@ -13,8 +13,8 @@
 @DEBUG = false
 
 TAG_CATIGORY_LDAP_SYNC_SUCCESSFUL = "LDAP Sync Successful"
-ATTRIBUTE_LAST_LDAP_SYNC          = "Last LDAP Sync Attempt"
-ATTRIBUTE_LDAP_SYNC_STATUS        = "LDAP Sync Status"
+ATTRIBUTE_LAST_LDAP_SYNC          = "Last_LDAP_Sync_Attempt"
+ATTRIBUTE_LDAP_SYNC_STATUS        = "LDAP_Sync_Status"
 DEFAULT_LDAP_SYNC_STAUTS          = "Unknown"
 DEFAULT_LDAP_SYNC_SUCCESSFUL      = false
 
