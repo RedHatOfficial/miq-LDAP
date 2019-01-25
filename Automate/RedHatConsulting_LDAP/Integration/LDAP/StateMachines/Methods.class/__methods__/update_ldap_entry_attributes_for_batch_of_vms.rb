@@ -77,7 +77,9 @@ end
 #         false if there was any error in the state machine to update the LDAP entry attributes
 def update_ldap_entry_attributes(vm, options)
   $evm.log(:info, "START: Update LDAP entry attributes for { vm => #{vm.name} }") if @DEBUG
-  
+
+  saved_vm = $evm.root['vm']
+
   begin
     # instantiate the state machine to update a single VM
     $evm.root['vm']      = vm
@@ -92,7 +94,7 @@ def update_ldap_entry_attributes(vm, options)
     $evm.root['ae_result']    = nil
     $evm.root['ae_reason']    = nil
     
-    $evm.root['vm']           = nil
+    $evm.root['vm']           = saved_vm
     $evm.root['options']      = nil
     $evm.root['ldap_entries'] = nil
   end
