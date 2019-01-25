@@ -71,7 +71,9 @@ end
 #         ldap_vm_custom_attributes VM Custom Attributes to apply based on the given LDAP entry
 def get_vm_tags_and_attributes_from_ldap_entry(vm, ldap_entry)
   $evm.log(:info, "{ vm => '#{vm.name}', ldap_entry='#{ldap_entry}'") if @DEBUG
-  
+
+  saved_vm = $evm.root['vm']
+
   # set params
   $evm.root['vm']         = vm
   $evm.root['ldap_entry'] = ldap_entry
@@ -80,9 +82,9 @@ def get_vm_tags_and_attributes_from_ldap_entry(vm, ldap_entry)
   result = $evm.instantiate("#{GET_VM_TAGS_FROM_LDAP_ENTRY_URI}")
   
   # clean up params
-  $evm.root['vm']         = nil
+  $evm.root['vm']         = saved_vm
   $evm.root['ldap_entry'] = nil
-  
+
   # return result
   return result[:ldap_vm_tags], result[:ldap_vm_custom_attributes]
 end

@@ -62,6 +62,8 @@ end
 #         false if there was any error in the state machine to update the Tags and Custom Attributes for the given VM
 def update_vm_tags_and_custom_attributes_from_ldap_entries(vm)
   $evm.log(:info, "START: Update VM Tags and Custom Attributes based on LDAP records for { vm => #{vm.name} }") if @DEBUG
+
+  saved_vm = $evm.root['vm']
   
   begin
     # instantiate the state machine to update a single VM
@@ -76,7 +78,7 @@ def update_vm_tags_and_custom_attributes_from_ldap_entries(vm)
     $evm.root['ae_result']            = nil
     $evm.root['ae_reason']            = nil
     
-    $evm.root['vm']                   = nil
+    $evm.root['vm']                   = saved_vm
     $evm.root['ldap_entries']         = nil
     $evm.root['ldap_sync_status']     = nil
     $evm.root['ldap_sync_successful'] = nil
